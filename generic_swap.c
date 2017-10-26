@@ -1,9 +1,27 @@
-/*@ predicate generic_swap {L1, L2}(char *a, char*b, integer size) =
-		\forall integer i; 0 <= i < size ==>
-        (\at(a[i], L1) == \at(b[i], L2)) && (\at(b[i], L1) == \at(a[i], L2));
+/*@ 
+    axiomatic generic_swap {
+    predicate generic_swap {L1, L2}(char *a, char*b, integer size) = 
+         \forall integer i; 0 <= i < size ==> (\at(a[i], L1) == \at(b[i], L2)) && (\at(b[i], L1) == \at(a[i], L2));
+    lemma generic_swap_next{L1, L2}:
+        \forall char *a, char *b, integer size;
+	    (\at(a[size - 1], L1) == \at(b[size - 1], L2)) && (\at(b[size - 1], L1) == \at(a[size - 1], L2))
+	    && (generic_swap {L1, L2}(a, b, size - 1))
+				==> generic_swap {L1, L2}(a, b, size);
+	lemma generic_swap_prev{L1, L2}:
+        \forall char *a, char *b, integer size;
+	    generic_swap {L1, L2}(a, b, size) && (size > 0) ==>
+	    (\at(a[size - 1], L1) == \at(b[size - 1], L2)) && (\at(b[size - 1], L1) == \at(a[size - 1], L2))
+	    && (generic_swap {L1, L2}(a, b, size - 1));
+    lemma generic_swap_zero{L1, L2}:
+        \forall char *a, char *b, integer size; 
+	    size == 0 ==> generic_swap{L1, L2}(a, b, 0);
+	lemma generic_swap_one{L1, L2}:
+	    \forall char *a, char *b; 
+	    generic_swap{L1, L2}(a, b, 1) ==>  (\at(a[0], L1) == \at(b[0], L2)) && (\at(b[0], L1) == \at(a[0], L2));
+	}
 */
 /*@ 
-	requires size > 0;
+    requires size > 0;
     requires \typeof(a) <: \type(char *);
     requires \typeof(b) <: \type(char *);
     requires \valid((char *)a+(0..size-1));
@@ -27,7 +45,7 @@ static void generic_swap(void *a, void *b, int size)
             loop invariant ob <= (char *) b < ob + osize;
             loop invariant (char *)a - oa == (char *)b - ob == osize - size;
 	        loop invariant 0 <= osize - size <= osize ;
-            loop invariant generic_swap {Here, Pre}((char*)a, (char*)b, osize - size);
+            loop invariant generic_swap {Here, Pre}((char*)oa, (char*)ob, osize - size);
             loop invariant \forall char *p; (char *) a <= p < oa + osize ==> *p == \at(*p, Pre);
             loop invariant \forall char *p; (char *) b <= p < ob + osize ==> *p == \at(*p, Pre);
             loop assigns oa[0..osize - size];
@@ -37,7 +55,7 @@ static void generic_swap(void *a, void *b, int size)
         do {
                t = *(char*) 
                a;
-                *(char *)a++ = *(char *)b;
-                *(char *)b++ = t;
+               *(char *)a++ = *(char *)b;
+               *(char *)b++ = t;
         } while (--size > 0);
 }
