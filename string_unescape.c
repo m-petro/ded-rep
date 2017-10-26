@@ -39,21 +39,26 @@ static bool unescape_hex(char **src, char **dst)
 	if (*q++ != 'x')
 		return false;
 		//@ assert q == *src + 1;
-
-	num = digit = hex_to_bin(*q++);
+	num = digit = hex_to_bin(*q++); 
+		// @ for one_digit: assert 0 <= digit <= 15; 
+		// @ for two_digits: assert 0 <= digit <= 15; 
 	if (digit < 0)
 		return false;
 		//@ assert q == *src + 2;
-
 	digit = hex_to_bin(*q);
+	// @ for one_digit: assert digit == -1; 
+	// @ for two_digits: assert 0 <= digit <= 15; 
 	if (digit >= 0) {
 		q++;
 		//@ assert q == *src + 3;
+		// @ assert 0 <= digit <= 16;
 		num = (num << 4) | digit;
+		//@ assert num < 300;
 	}
 	*p = num;
 	*dst += 1;
-	//@ assert q == (*src + 2) || q == (*src + 3);
+	//@ for one_digit: assert q == (*src + 2); 
+	//@ for two_digits: assert q == (*src + 3);
 	*src = q;
 	return true;
 }
@@ -201,11 +206,11 @@ static bool unescape_space(char **src, char **dst)
 				(**src) == 'a' || (**src) == 'e';
         ensures \result == true;
         ensures *dst == \old(*dst + 1);
-       ensures *src == \old(*src + 1);
+        ensures *src == \old(*src + 1);
         ensures (**dst) == unescape_special(**src);
     behavior fail:
-         assumes (**src) != '\"' && (**src) != '\\' &&
-				 (**src) != 'a' && (**src) != 'e';
+         assumes ((**src) != '\"') && ((**src) != '\\') &&
+				 ((**src) != 'a') && ((**src) != 'e');
          ensures \result == false;
     complete behaviors;
     disjoint behaviors;
@@ -238,6 +243,16 @@ static bool unescape_special(char **src, char **dst)
  
 /*@ requires \valid(src + (0..size - 1));
     requires \valid(dst + (0..size - 1));
+	behavior empty:
+	assumes 
+		(\forall integer i; 0 <= i < size ==> src[i] != '//'); 
+		\\ || (flags & UNESCAPE_SPACE == 0);  invalid operands to binary &
+	assigns dst[0..size - 1];
+	ensures \result == (size - 1);
+	ensures 
+		\forall integer i; 0 <= i < size ==> dst[i] == src[i];
+		
+	
  */
  
 
