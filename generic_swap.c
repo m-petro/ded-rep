@@ -7,17 +7,9 @@
 	    (\at(a[size - 1], L1) == \at(b[size - 1], L2)) && (\at(b[size - 1], L1) == \at(a[size - 1], L2))
 	    && (generic_swap {L1, L2}(a, b, size - 1))
 				==> generic_swap {L1, L2}(a, b, size);
-	lemma generic_swap_prev{L1, L2}:
-        \forall char *a, char *b, integer size;
-	    generic_swap {L1, L2}(a, b, size) && (size > 0) ==>
-	    (\at(a[size - 1], L1) == \at(b[size - 1], L2)) && (\at(b[size - 1], L1) == \at(a[size - 1], L2))
-	    && (generic_swap {L1, L2}(a, b, size - 1));
     lemma generic_swap_zero{L1, L2}:
         \forall char *a, char *b, integer size; 
 	    size == 0 ==> generic_swap{L1, L2}(a, b, 0);
-	lemma generic_swap_one{L1, L2}:
-	    \forall char *a, char *b; 
-	    generic_swap{L1, L2}(a, b, 1) ==>  (\at(a[0], L1) == \at(b[0], L2)) && (\at(b[0], L1) == \at(a[0], L2));
 	}
 */
 /*@ 
