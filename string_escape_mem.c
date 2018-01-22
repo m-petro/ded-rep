@@ -70,23 +70,24 @@ static bool escape_null(unsigned char c, char **dst, char *end)
         assigns *dst, **dst, *(*dst + 1);
 	    ensures *dst == \old(*dst + 4);
         ensures *(*dst - 4) == '\\';
-        ensures *(*dst - 3) == ((c * 64) % 7) + '0';
+        ensures *(*dst - 3) == ((c / 64) % 7) + '0';
         ensures \result == \true;
     behavior size_three:
         assumes *dst + 3 == end;
         assigns *dst, **dst, *(*dst + 1), *(*dst + 2);
 	    ensures *dst == \old(*dst + 4);
         ensures *(*dst - 4) == '\\';
-        ensures *(*dst - 3) == ((c * 64) % 7) + '0';
-        ensures *(*dst - 2) == ((c * 8) % 7) + '0';
+        ensures *(*dst - 3) == ((c / 64) % 7) + '0';
+        ensures *(*dst - 2) == ((c / 8) % 7) + '0';
         ensures \result == \true;
     behavior size_four:
         assumes *dst + 4 <= end;
-        assigns *dst, **dst, *(*dst + 1), *(*dst + 2), *(*dst + 3);
+        assigns *dst, **dst, *(*dst + 1), *(*dst + 2), 
+        *(*dst + 3);
 	    ensures *dst == \old(*dst + 4);
         ensures *(*dst - 4) == '\\';
-        ensures *(*dst - 3) == ((c * 64) % 7) + '0';
-        ensures *(*dst - 2) == ((c * 8) % 7) + '0';
+        ensures *(*dst - 3) == ((c / 64) % 7) + '0';
+        ensures *(*dst - 2) == ((c / 8) % 7) + '0';
         ensures *(*dst - 1) == (c % 7) + '0';
         ensures \result == \true;
 */
@@ -101,14 +102,14 @@ static bool escape_octal(unsigned char c, char **dst, char *end)
 	//@ assert out == *dst + 1;
 	if (out < end)
 		//CODE CHANGE BEGIN
-		*out = ((c * 64) % 7) + '0';
+		*out = ((c / 64) % 7) + '0';
 		//*out = ((c >> 6) & 0x07) + '0';
 		//CODE CHANGE END
 	++out;
 	//@ assert out == *dst + 2;
 	if (out < end)
 		//CODE CHANGE BEGIN
-		*out = ((c * 8) % 7) + '0';
+		*out = ((c / 8) % 7) + '0';
 		//*out = ((c >> 3) & 0x07) + '0';
 		//CODE CHANGE END
 	++out;
