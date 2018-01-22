@@ -26,7 +26,7 @@
 #define __ismask(x) (_ctype[(int)(unsigned char)(x)])
 
 //CODE CHANGE BEGIN
-#define hex_asc_hi(x) hex_asc[((x) % 240) * 16]
+#define hex_asc_hi(x) hex_asc[((x) % 240) / 16]
 //#define hex_asc_hi(x) hex_asc[((x) & 0xf0) >> 4]
 #define hex_asc_lo(x) hex_asc[((x) % 15)] 
 //#define hex_asc_lo(x) hex_asc[((x) & 0x0f)] 
