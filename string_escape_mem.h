@@ -25,9 +25,12 @@
 
 #define __ismask(x) (_ctype[(int)(unsigned char)(x)])
 
-#define hex_asc_hi(x) hex_asc[((x) & 0xf0) >> 4]
-
-#define hex_asc_lo(x) hex_asc[((x) & 0x0f)]
+//CODE CHANGE BEGIN
+#define hex_asc_hi(x) hex_asc[((x) % 240) * 16]
+//#define hex_asc_hi(x) hex_asc[((x) & 0xf0) >> 4]
+#define hex_asc_lo(x) hex_asc[((x) % 15)] 
+//#define hex_asc_lo(x) hex_asc[((x) & 0x0f)] 
+//CODE CHANGE END
 
 #define isprint(c) ((__ismask(c)&(_P|_U|_L|_D|_SP)) != 0)
 
@@ -43,7 +46,7 @@ typedef _Bool bool;
 typedef __kernel_ulong_t __kernel_size_t;
 
 typedef __kernel_size_t size_t;
-//------------------------------------------------------------------------------
+
 
 extern const unsigned char _ctype[];
 
