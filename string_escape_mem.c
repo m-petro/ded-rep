@@ -3,7 +3,7 @@
 /*@ 
 	requires \valid(end) && \valid(dst)
 		 && \valid(*dst) && \valid(*dst + 1);
-    
+    requires \base_addr(*dst) == \base_addr(end);
     behavior is_empty:
         assumes c != 0;
         assigns \nothing;
@@ -50,9 +50,8 @@ static bool escape_null(unsigned char c, char **dst, char *end)
 }
 
 /*@ 
-	requires \valid(end) && \valid(dst)
-		 && \valid(*dst) && \valid(*dst + 1)
-		 && \valid(*dst + 2) && \valid(*dst + 3);
+	requires \valid(end);
+	requires \valid(dst) && \valid(*dst + (0..3));
     
     behavior size_zero:
         assumes *dst >= end;
@@ -129,7 +128,7 @@ static bool escape_octal(unsigned char c, char **dst, char *end)
 /*@ 
 	requires \valid(end) && \valid(dst)
 		 && \valid(*dst) && \valid(*dst + 1);
-    
+    requires \base_addr(*dst) == \base_addr(end);
     behavior size_zero:
         assumes *dst >= end;
         assigns *dst;
@@ -148,7 +147,7 @@ static bool escape_passthrough(unsigned char c, char **dst, char *end)
 	char *out = *dst;
 
 	if (out < end)
-		*out = c;
+		*out = (char)/*@%*/c; // CODE CHANGE
 	*dst = out + 1;
 	return true;
 }
