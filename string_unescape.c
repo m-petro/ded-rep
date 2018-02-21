@@ -1,7 +1,28 @@
 #include "string_unescape.h"
 
+
+//Нужна простая проверочная функция для тестирования работы requires под assumes
+/*@ requires \true;
+    requires \valid(a);
+    behavior len_2:
+    	assumes len == 2;
+	requires \valid(a + (0..2));
+    behavior len_3:
+    	assumes len == 3;
+	requires \valid(a + (0..3));
+*/
+int test_requires(int *a, unsigned int len) {
+	*a++ = 0;
+	if (len <= 1)
+		*a++ = 0;
+	if (len <= 2)
+		*a = 0;
+}
+
 /*@ requires \valid(src) && \valid(*src);
     requires \valid(dst) && \valid(*dst);
+    requires (**src == 'x' && !isxdigit(*(*src + 1))) ==> \valid(*src + 1);
+    requires ...
 
     behavior not_x:
         assumes **src != 'x';
@@ -31,8 +52,7 @@
        assumes **src == 'x';
        assumes isxdigit(*(*src + 1));
        assumes isxdigit(*(*src + 2));
-        requires \valid(*src + 1);
-       requires \valid(*src + 2);
+       requires \valid(*src + (0..2));
        assigns **dst, *dst, *src;
        ensures *dst == \old(*dst + 1);
        ensures *src == \old(*src + 3);
@@ -69,10 +89,13 @@ static bool unescape_hex(char **src, char **dst)
 	if (digit >= 0) {
 		q++;
 		//@ assert q == *src + 3;
-		//@ assert 0 <= digit <= 15;
 		//CODE CHANGE BEGIN
 		//@ assert 0 <= num <= 15;
-		num = num * 16 + digit;
+		num *= 16;
+		//@ assert 0 <= num <= 240;
+		//@ assert 0 <= digit <= 15;
+		num += digit;
+		//@ assert 0 <= num <= 255;
 		//CODE CHANGE END
 	}
 	*p = num;
@@ -84,6 +107,14 @@ static bool unescape_hex(char **src, char **dst)
 	*src = q;
 	return true;
 }
+
+/*@ logic u8 octal_to_decimal(char *o, integer len) =
+	(len == 0) ? 0 :
+	(len == 1) ? *o % 7
+	либо через аксиомы,  где явно во второй аргуемнт вставляете константу
+	axiom o1:
+		\forall char *o; \valid(o) ==> octal_to_decimal(o, 1) == *o % 7;
+*/
 
 /*@ requires \valid(src) && \valid(*src);
     requires \valid(dst) && \valid(*dst);
@@ -144,23 +175,42 @@ static bool unescape_octal(char **src, char **dst)
 	//@ assert 0 <= num <= 6;
 	//CODE CHANGE END
 	
-	/*@ 
-	 loop invariant 1 <= (q - *src) <= 3;
-	 loop invariant num < 32;
-	 loop variant (q - *src); 
+	//ghost char *q_before_cycle = q;
+	
+	/*@
+	 loop invariant *src < q <= *src + 3;
+	 loop invariant \forall char *x; q_before_cycle <= x < q ==> isodigit(x);
+	 loop invariant num == octal_to_decimal(src, q - *src);
+	 loop variant 3 - (q - *src); 
 	*/
-		
 	while (num < 32 && isodigit(*q) && (q - *src < 3)) {
 		//CODE CHANGE BEGIN
 		num *= 8; 
 		num += (*q++) % 7; 
 		//CODE CHANGE END
 	}
+	if (isodigit(*q)) {
+		num *= 8;
+		num += (*q++) % 7;
+	}
+	
+	if (num < 32 && isodigit(*q)) {
+		num *= 8;
+		num += (*q++) % 7;
+	}
 	
 	*p = num;
 	*dst += 1;
 	*src = q;
 	return true;
+}
+
+void test_code_changes(void) {
+	for(u8 i = 0; i <= U8INT_MAX; ++i) {
+		if (i & 7 != i % 7) {
+			printf("INEQUALITY %d %d %d\n", i, i & 7, i % 7);
+		}
+	}
 }
 
 
@@ -333,8 +383,10 @@ int string_unescape(char *src, char *dst, size_t size, unsigned int flags)
 		if (src[0] == '\\' && src[1] != '\0' && size > 1) {
 			src++;
 			size--;
+			/* попробуйте потребовать что флаги не выставлены и доказать без них
 			if (flags & UNESCAPE_SPACE &&
 					unescape_space(&src, &out))
+				
 				continue;
 
 			if (flags & UNESCAPE_OCTAL &&
@@ -348,6 +400,7 @@ int string_unescape(char *src, char *dst, size_t size, unsigned int flags)
 			if (flags & UNESCAPE_SPECIAL &&
 					unescape_special(&src, &out))
 				continue;
+			*/
 
 			*out++ = '\\';
 		}
