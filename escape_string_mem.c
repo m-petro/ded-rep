@@ -126,20 +126,18 @@ static bool escape_octal(unsigned char c, char **dst, char *end)
 }
 
 /*@ 
-	requires \valid(end) && \valid(dst)
-		&& \valid(*dst + (0..1));
+	 requires \valid(end);
+    requires \valid(dst) && \valid(*dst);
     requires \base_addr(*dst) == \base_addr(end);
+    ensures *dst    == \old(*dst + 1);
+    ensures \result == \true;
     behavior size_zero:
         assumes *dst >= end;
         assigns *dst;
-        ensures *dst == \old(*dst + 1);
-        ensures \result == \true;
     behavior size_one:
         assumes *dst < end;
         assigns *dst, **dst;
-        ensures *dst == \old(*dst + 1);
-        ensures \old(**dst) == (char)c;
-        ensures \result == \true;
+        ensures *\old(*dst) == (char %) c;
     complete behaviors;
     disjoint behaviors;
 */
@@ -149,9 +147,7 @@ static bool escape_passthrough(unsigned char c, char **dst, char *end)
 	char *out = *dst;
 
 	if (out < end)
-	// code changed
-		//@ assert out == *dst;
-		*out = (char)c;
+		*out = (char)/*@%*/c; // CODE CHANGE: explicit cast
 	*dst = out + 1;
 	return true;
 }
@@ -315,48 +311,28 @@ static bool escape_special(unsigned char c, char **dst, char *end)
 	return true;
 }
 
+const char hex_asc[] = "0123456789abcdef";
+
+/*@ predicate value_at_pos{L1,L2}(char *str, char *end, integer pos, char value) =
+      \at(str,L1) + pos < \at(end,L1) ==> \at(*\at(str,L1),L2) + pos == value;
+ */
+
 /*@ 
-	requires \valid(end) && \valid(dst)
-		 && \valid(*dst + (0..3));
+	 requires \valid(end);
+    requires \valid(dst);
     requires \base_addr(*dst) == \base_addr(end);
-    behavior size_zero:
-        assumes *dst >= end;
-        assigns *dst;
-        ensures *dst == \old(*dst + 4);
-        ensures \result == \true;
-    behavior size_one:
-        assumes *dst + 1 == end;
-        assigns *dst, **dst;
-        ensures *dst == \old(*dst + 4);
-        ensures *(*dst - 4) == '\\';
-        ensures \result == \true;
-    behavior size_two:
-        assumes *dst + 2 == end;
-        assigns *dst, **dst, *(*dst + 1);
-	    ensures *dst == \old(*dst + 4);
-        ensures *(*dst - 4) == '\\';
-        ensures *(*dst - 3) == 'x';
-        ensures \result == \true;
-    behavior size_three:
-        assumes *dst + 3 == end;
-        assigns *dst, **dst, *(*dst + 1), *(*dst + 2);
-	    ensures *dst == \old(*dst + 4);
-        ensures *(*dst - 4) == '\\';
-        ensures *(*dst - 3) == 'x';
-        ensures *(*dst - 2) == hex_asc_hi(c);
-        ensures \result == \true;
-    behavior size_four:
-        assumes *dst + 4 <= end;
-        assigns *dst, **dst, *(*dst + 1), *(*dst + 2), *(*dst + 3);
-	    ensures *dst == \old(*dst + 4);
-        ensures *(*dst - 4) == '\\';
-        ensures *(*dst - 3) == 'x';
-        ensures *(*dst - 2) == hex_asc_hi(c);
-        ensures *(*dst - 1) == hex_asc_lo(c);
-        ensures \result == \true;
+    requires \valid(*dst + (0 .. (end - *dst)));
+
+    assigns *dst, *dst[0 .. (end - *dst + 1)];
+    ensures \result == \true;
+
+    ensures *dst == \old(*dst) + 4;
+
+    ensures value_at_pos{Pre,Post}(\old(*dst), end, 0, '\\');
+    ensures value_at_pos{Pre,Post}(\old(*dst), end, 1, 'x');
+    ensures value_at_pos{Pre,Post}(\old(*dst), end, 2, hex_asc_hi(c));
+    ensures value_at_pos{Pre,Post}(\old(*dst), end, 3, hex_asc_lo(c));
 */
-
-
 static bool escape_hex(unsigned char c, char **dst, char *end)
 {
 	char *out = *dst;
@@ -364,42 +340,28 @@ static bool escape_hex(unsigned char c, char **dst, char *end)
 	if (out < end)
 		*out = '\\';
 	++out;
-	//@ assert out == *dst + 1;
 	if (out < end)
 		*out = 'x';
 	++out;
-	//@ assert out == *dst + 2;
 	if (out < end)
 		*out = hex_asc_hi(c);
 	++out;
-	//@ assert out == *dst + 3;
 	if (out < end)
 		*out = hex_asc_lo(c);
 	++out;
-	//@ assert out == *dst + 4;
 
 	*dst = out;
 	return true;
 }
-/* @
-	requires \valid(src + (0..size - 1));
-    requires \valid(dst + (0..size - 1));
-	behavior empty:
-	assumes 
-		(\forall integer i; 0 <= i < size ==> src[i] != '//') 
-		|| (((flags & (unsigned int)ESCAPE_SPACE) == 0) &&
-			((flags & (unsigned int)ESCAPE_OCTAL) == 0) &&
-			((flags & (unsigned int)ESCAPE_HEX) == 0)   &&
-			((flags & (unsigned int)ESCAPE_SPECIAL) == 0)); 							 
-	assigns dst[0..size - 1];
-	ensures \result == (size - 1);
-	ensures 
-		\forall integer i; 0 <= i < size ==> dst[i] == src[i];
+
+/*@
+	  requires \valid(src + (0..isz - 1));
+     requires \valid(dst + (0..osz - 1));
+     requires only == \null || \valid(only);
+     requires flags == 0;
+
+     assigns dst[0..osz-1];
 */
-
-
-
-
 int string_escape_mem(const char *src, size_t isz, char *dst, size_t osz,
 		      unsigned int flags, const char *only)
 {
@@ -410,23 +372,11 @@ int string_escape_mem(const char *src, size_t isz, char *dst, size_t osz,
 	while (isz--) {
 		unsigned char c = *src++;
 
-		/*
-		 * Apply rules in the following sequence:
-		 *	- the character is printable, when @flags has
-		 *	  %ESCAPE_NP bit set
-		 *	- the @only string is supplied and does not contain a
-		 *	  character under question
-		 *	- the character doesn't fall into a class of symbols
-		 *	  defined by given @flags
-		 * In these cases we just pass through a character to the
-		 * output buffer.
-		 */
-
 		if ((flags & ESCAPE_NP && isprint(c)) ||
 		    (is_dict && !strchr(only, c))) {
 			/* do nothing */
 		} else {
-			if (flags & ESCAPE_SPACE && escape_space(c, &p, end))
+			/*if (flags & ESCAPE_SPACE && escape_space(c, &p, end))
 				continue;
 
 			if (flags & ESCAPE_SPECIAL && escape_special(c, &p, end))
@@ -435,9 +385,8 @@ int string_escape_mem(const char *src, size_t isz, char *dst, size_t osz,
 			if (flags & ESCAPE_NULL && escape_null(c, &p, end))
 				continue;
 
-			/* ESCAPE_OCTAL and ESCAPE_HEX always go last */
 			if (flags & ESCAPE_OCTAL && escape_octal(c, &p, end))
-				continue;
+				continue;*/
 
 			if (flags & ESCAPE_HEX && escape_hex(c, &p, end))
 				continue;
