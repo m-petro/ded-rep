@@ -1,0 +1,73 @@
+
+axiomatic Padding {
+
+  logic type padding
+  
+}
+
+tag voidP = {
+}
+
+type voidP = [voidP]
+
+tag charP = voidP with {
+  int8 charM: 8;
+}
+
+tag unsigned_charP = {
+  uint8 unsigned_charM: 8;
+}
+
+type unsigned_charP = [unsigned_charP]
+
+tag intP = {
+  int32 intM: 32;
+}
+
+type intP = [intP]
+
+int32 test_requires(intP[..] a, uint32 len)
+  requires ((_C_22 : true) &&
+             (_C_23 : \at((((\offset_min(\at(a,Here)) <= \at(0,Here)) &&
+                             (\offset_max(\at(a,Here)) >= \at(0,Here))) &&
+                            true),Here)));
+  requires ((_C_21 : (len == (1 :> uint32))) ==>
+             (_C_20 : \at((((\offset_min(\at(a,Here)) <= \at(1,Here)) &&
+                             (\offset_max(\at(a,Here)) >= \at(1,Here))) &&
+                            true),Here)));
+  requires ((_C_19 : (len == (2 :> uint32))) ==>
+             (_C_18 : \at((((\offset_min(\at(a,Here)) <= \at(2,Here)) &&
+                             (\offset_max(\at(a,Here)) >= \at(2,Here))) &&
+                            true),Here)));
+behavior default:
+  ensures true;
+behavior len_1:
+  assumes (len == (1 :> uint32));
+  ensures true;
+behavior len_2:
+  assumes (len == (2 :> uint32));
+  ensures true;
+{  
+   (var intP[..] tmp);
+   
+   (var intP[..] tmp_0);
+   
+   (var int32 __retres);
+   
+   {  
+      {  (_C_1 : (tmp = a));
+         (_C_3 : (a = (_C_2 : (a + (1 :> int32)))));
+         (_C_5 : ((_C_4 : tmp.intM) = (0 :> int32)))
+      };
+      (if (_C_12 : (len == (_C_11 : ((1 :> int32) :> uint32)))) then 
+      {  (_C_6 : (tmp_0 = a));
+         (_C_8 : (a = (_C_7 : (a + (1 :> int32)))));
+         (_C_10 : ((_C_9 : tmp_0.intM) = (0 :> int32)))
+      } else ());
+      (if (_C_16 : (len == (_C_15 : ((2 :> int32) :> uint32)))) then 
+      (_C_14 : ((_C_13 : a.intM) = (0 :> int32))) else ());
+      (_C_17 : (__retres = (0 :> int32)));
+      
+      (return __retres)
+   }
+}

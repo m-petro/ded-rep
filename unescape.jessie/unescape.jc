@@ -1,0 +1,321 @@
+
+axiomatic Padding {
+
+  logic type padding
+  
+}
+
+type _bool = 0..1
+
+tag voidP = {
+}
+
+type voidP = [voidP]
+
+tag charP = voidP with {
+  int8 charM: 8;
+}
+
+tag unsigned_charP = {
+  uint8 unsigned_charM: 8;
+}
+
+type unsigned_charP = [unsigned_charP]
+
+tag char_xP = {
+  charP[..] char_xM: 64;
+}
+
+type char_xP = [char_xP]
+
+type __anonenum_2 = 0..1
+
+axiomatic Un_Space {
+
+  logic int8 unescape_space(integer ch)
+   
+  axiom N :
+  (_C_1 : (unescape_space(((110 :> int8) :> integer)) == (10 :> int8)))
+   
+  axiom R :
+  (_C_2 : (unescape_space(((114 :> int8) :> integer)) == (13 :> int8)))
+   
+  axiom T :
+  (_C_3 : (unescape_space(((116 :> int8) :> integer)) == (9 :> int8)))
+   
+  axiom V :
+  (_C_4 : (unescape_space(((118 :> int8) :> integer)) == (11 :> int8)))
+   
+  axiom F :
+  (_C_5 : (unescape_space(((102 :> int8) :> integer)) == (12 :> int8)))
+  
+}
+
+_bool unescape_space(char_xP[..] src_5, char_xP[..] dst)
+  requires (_C_62 : ((((_C_65 : \at((((\offset_min(\at(src_5,Here)) <=
+                                        \at(0,Here)) &&
+                                       (\offset_max(\at(src_5,Here)) >=
+                                         \at(0,Here))) &&
+                                      true),Here)) &&
+                        (_C_66 : \at((((\offset_min(\at(dst,Here)) <=
+                                         \at(0,Here)) &&
+                                        (\offset_max(\at(dst,Here)) >=
+                                          \at(0,Here))) &&
+                                       true),Here))) &&
+                       (_C_67 : \at((((\offset_min(\at(src_5.char_xM,Here)) <=
+                                        \at(0,Here)) &&
+                                       (\offset_max(\at(src_5.char_xM,Here)) >=
+                                         \at(0,Here))) &&
+                                      true),Here))) &&
+                      (_C_68 : \at((((\offset_min(\at(dst.char_xM,Here)) <=
+                                       \at(0,Here)) &&
+                                      (\offset_max(\at(dst.char_xM,Here)) >=
+                                        \at(0,Here))) &&
+                                     true),Here))));
+behavior default:
+  assigns dst.char_xM.charM,
+  src_5.char_xM,
+  dst.char_xM;
+  ensures true;
+behavior is_space:
+  assumes (((((src_5.char_xM.charM == (110 :> int8)) ||
+               (src_5.char_xM.charM == (116 :> int8))) ||
+              (src_5.char_xM.charM == (114 :> int8))) ||
+             (src_5.char_xM.charM == (118 :> int8))) ||
+            (src_5.char_xM.charM == (102 :> int8)));
+  ensures (_C_44 : ((_C_45 : ((\result :> uint32) ==
+                               ((1 :> __anonenum_2) :> uint32))) &&
+                     ((_C_47 : (\at(dst,Old).char_xM ==
+                                 \at((dst.char_xM + 1),Old))) &&
+                       ((_C_49 : (\at(src_5,Old).char_xM ==
+                                   \at((src_5.char_xM + 1),Old))) &&
+                         (_C_50 : ((\at(dst,Old).char_xM - 1).charM ==
+                                    unescape_space(((\at(src_5,Old).char_xM -
+                                                      1).charM :> integer))))))));
+behavior fail:
+  assumes (((((src_5.char_xM.charM != (110 :> int8)) &&
+               (src_5.char_xM.charM != (116 :> int8))) &&
+              (src_5.char_xM.charM != (114 :> int8))) &&
+             (src_5.char_xM.charM != (118 :> int8))) &&
+            (src_5.char_xM.charM != (102 :> int8)));
+  ensures (_C_51 : ((\result :> uint32) == ((0 :> __anonenum_2) :> uint32)));
+{  
+   (check (disjoint_behaviors : (! ((((((src_5.char_xM.charM ==
+                                          (110 :> int8)) ||
+                                         (src_5.char_xM.charM ==
+                                           (116 :> int8))) ||
+                                        (src_5.char_xM.charM ==
+                                          (114 :> int8))) ||
+                                       (src_5.char_xM.charM == (118 :> int8))) ||
+                                      (src_5.char_xM.charM == (102 :> int8))) &&
+                                     (((((src_5.char_xM.charM !=
+                                           (110 :> int8)) &&
+                                          (src_5.char_xM.charM !=
+                                            (116 :> int8))) &&
+                                         (src_5.char_xM.charM !=
+                                           (114 :> int8))) &&
+                                        (src_5.char_xM.charM !=
+                                          (118 :> int8))) &&
+                                       (src_5.char_xM.charM != (102 :> int8)))))));
+   
+   (check (complete_behaviors : ((((((src_5.char_xM.charM != (110 :> int8)) &&
+                                      (src_5.char_xM.charM != (116 :> int8))) &&
+                                     (src_5.char_xM.charM != (114 :> int8))) &&
+                                    (src_5.char_xM.charM != (118 :> int8))) &&
+                                   (src_5.char_xM.charM != (102 :> int8))) ||
+                                  (((((src_5.char_xM.charM == (110 :> int8)) ||
+                                       (src_5.char_xM.charM == (116 :> int8))) ||
+                                      (src_5.char_xM.charM == (114 :> int8))) ||
+                                     (src_5.char_xM.charM == (118 :> int8))) ||
+                                    (src_5.char_xM.charM == (102 :> int8))))));
+   
+   (var charP[..] p);
+   
+   (var charP[..] q);
+   
+   (var _bool __retres);
+   
+   {  (_C_7 : (p = (_C_6 : dst.char_xM)));
+      (_C_9 : (q = (_C_8 : src_5.char_xM)));
+      
+      switch ((_C_33 : ((_C_32 : q.charM) :> int32))) {
+        case (_C_10 : (110 :> int32)):
+        {  (_C_13 : ((_C_12 : p.charM) = (_C_11 : ((10 :> int32) :> int8))));
+           
+           (goto switch_0_break)
+        }
+        case (_C_14 : (114 :> int32)):
+        {  (_C_17 : ((_C_16 : p.charM) = (_C_15 : ((13 :> int32) :> int8))));
+           
+           (goto switch_0_break)
+        }
+        case (_C_18 : (116 :> int32)):
+        {  (_C_21 : ((_C_20 : p.charM) = (_C_19 : ((9 :> int32) :> int8))));
+           
+           (goto switch_0_break)
+        }
+        case (_C_22 : (118 :> int32)):
+        {  (_C_25 : ((_C_24 : p.charM) = (_C_23 : ((11 :> int32) :> int8))));
+           
+           (goto switch_0_break)
+        }
+        case (_C_26 : (102 :> int32)):
+        {  (_C_29 : ((_C_28 : p.charM) = (_C_27 : ((12 :> int32) :> int8))));
+           
+           (goto switch_0_break)
+        }
+        default:
+        {  ();
+           (_C_31 : (__retres = (_C_30 : ((0 :> int32) :> _bool))));
+           
+           (goto return_label)
+        }
+      };
+      (switch_0_break : ());
+      (_C_37 : ((_C_36 : dst.char_xM) = (_C_35 : ((_C_34 : dst.char_xM) +
+                                                   (1 :> int32)))));
+      (_C_41 : ((_C_40 : src_5.char_xM) = (_C_39 : ((_C_38 : src_5.char_xM) +
+                                                     (1 :> int32)))));
+      (_C_43 : (__retres = (_C_42 : ((1 :> int32) :> _bool))));
+      (return_label : 
+      (return __retres))
+   }
+}
+
+axiomatic Un_Special {
+
+  logic int8 unescape_special(int8 ch_0)
+   
+  axiom S :
+  (_C_69 : (unescape_special((34 :> int8)) == (34 :> int8)))
+   
+  axiom SS :
+  (_C_70 : (unescape_special((92 :> int8)) == (92 :> int8)))
+   
+  axiom E :
+  (_C_71 : (unescape_special((101 :> int8)) == (23653 :> int8)))
+   
+  axiom A :
+  (_C_72 : (unescape_special((97 :> int8)) == (7 :> int8)))
+  
+}
+
+predicate is_special(integer c) =
+((((c == ((34 :> int8) :> integer)) || (c == ((92 :> int8) :> integer))) ||
+   (c == ((101 :> int8) :> integer))) ||
+  (c == ((97 :> int8) :> integer)))
+
+_bool unescape_special(char_xP[..] src_6, char_xP[..] dst_0)
+  requires (_C_123 : ((((_C_126 : \at((((\offset_min(\at(src_6,Here)) <=
+                                          \at(0,Here)) &&
+                                         (\offset_max(\at(src_6,Here)) >=
+                                           \at(0,Here))) &&
+                                        true),Here)) &&
+                         (_C_127 : \at((((\offset_min(\at(dst_0,Here)) <=
+                                           \at(0,Here)) &&
+                                          (\offset_max(\at(dst_0,Here)) >=
+                                            \at(0,Here))) &&
+                                         true),Here))) &&
+                        (_C_128 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
+                                          \at(0,Here)) &&
+                                         (\offset_max(\at(src_6.char_xM,Here)) >=
+                                           \at(0,Here))) &&
+                                        true),Here))) &&
+                       (_C_129 : \at((((\offset_min(\at(dst_0.char_xM,Here)) <=
+                                         \at(0,Here)) &&
+                                        (\offset_max(\at(dst_0.char_xM,Here)) >=
+                                          \at(0,Here))) &&
+                                       true),Here))));
+behavior default:
+  assigns dst_0.char_xM.charM,
+  dst_0.char_xM,
+  src_6.char_xM;
+  ensures true;
+behavior is_special:
+  assumes ((((src_6.char_xM.charM == (34 :> int8)) ||
+              (src_6.char_xM.charM == (92 :> int8))) ||
+             (src_6.char_xM.charM == (101 :> int8))) ||
+            (src_6.char_xM.charM == (97 :> int8)));
+  ensures (_C_107 : ((_C_108 : ((\result :> uint32) ==
+                                 ((1 :> __anonenum_2) :> uint32))) &&
+                      ((_C_110 : (\at(dst_0,Old).char_xM ==
+                                   \at((dst_0.char_xM + 1),Old))) &&
+                        ((_C_112 : (\at(src_6,Old).char_xM ==
+                                     \at((src_6.char_xM + 1),Old))) &&
+                          (_C_113 : ((\at(dst_0,Old).char_xM - 1).charM ==
+                                      unescape_special((\at(src_6,Old).char_xM -
+                                                         1).charM)))))));
+behavior fail:
+  assumes ((((src_6.char_xM.charM != (34 :> int8)) &&
+              (src_6.char_xM.charM != (92 :> int8))) &&
+             (src_6.char_xM.charM != (101 :> int8))) &&
+            (src_6.char_xM.charM != (97 :> int8)));
+  ensures (_C_114 : ((\result :> uint32) == ((0 :> __anonenum_2) :> uint32)));
+{  
+   (check (disjoint_behaviors : (! (((((src_6.char_xM.charM == (34 :> int8)) ||
+                                        (src_6.char_xM.charM == (92 :> int8))) ||
+                                       (src_6.char_xM.charM == (101 :> int8))) ||
+                                      (src_6.char_xM.charM == (97 :> int8))) &&
+                                     ((((src_6.char_xM.charM != (34 :> int8)) &&
+                                         (src_6.char_xM.charM !=
+                                           (92 :> int8))) &&
+                                        (src_6.char_xM.charM !=
+                                          (101 :> int8))) &&
+                                       (src_6.char_xM.charM != (97 :> int8)))))));
+   
+   (check (complete_behaviors : (((((src_6.char_xM.charM != (34 :> int8)) &&
+                                     (src_6.char_xM.charM != (92 :> int8))) &&
+                                    (src_6.char_xM.charM != (101 :> int8))) &&
+                                   (src_6.char_xM.charM != (97 :> int8))) ||
+                                  ((((src_6.char_xM.charM == (34 :> int8)) ||
+                                      (src_6.char_xM.charM == (92 :> int8))) ||
+                                     (src_6.char_xM.charM == (101 :> int8))) ||
+                                    (src_6.char_xM.charM == (97 :> int8))))));
+   
+   (var charP[..] p_0);
+   
+   (var charP[..] q_0);
+   
+   (var _bool __retres_0);
+   
+   {  (_C_74 : (p_0 = (_C_73 : dst_0.char_xM)));
+      (_C_76 : (q_0 = (_C_75 : src_6.char_xM)));
+      
+      switch ((_C_96 : ((_C_95 : q_0.charM) :> int32))) {
+        case (_C_77 : (34 :> int32)):
+        {  (_C_80 : ((_C_79 : p_0.charM) = (_C_78 : ((34 :> int32) :> int8))));
+           
+           (goto switch_0_break)
+        }
+        case (_C_81 : (92 :> int32)):
+        {  (_C_84 : ((_C_83 : p_0.charM) = (_C_82 : ((92 :> int32) :> int8))));
+           
+           (goto switch_0_break)
+        }
+        case (_C_85 : (97 :> int32)):
+        {  (_C_88 : ((_C_87 : p_0.charM) = (_C_86 : ((7 :> int32) :> int8))));
+           
+           (goto switch_0_break)
+        }
+        case (_C_89 : (101 :> int32)):
+        {  (_C_92 : ((_C_91 : p_0.charM) = (_C_90 : ((27 :> int32) :> int8))));
+           
+           (goto switch_0_break)
+        }
+        default:
+        {  ();
+           (_C_94 : (__retres_0 = (_C_93 : ((0 :> int32) :> _bool))));
+           
+           (goto return_label)
+        }
+      };
+      (switch_0_break : ());
+      (_C_100 : ((_C_99 : dst_0.char_xM) = (_C_98 : ((_C_97 : dst_0.char_xM) +
+                                                      (1 :> int32)))));
+      (_C_104 : ((_C_103 : src_6.char_xM) = (_C_102 : ((_C_101 : src_6.char_xM) +
+                                                        (1 :> int32)))));
+      (_C_106 : (__retres_0 = (_C_105 : ((1 :> int32) :> _bool))));
+      (return_label : 
+      (return __retres_0))
+   }
+}
