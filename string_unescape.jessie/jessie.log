@@ -161,11 +161,11 @@ Component 1:
  isodigit calls: 
 
 Component 2:
- unescape_hex calls: hex_to_bin,
+ unescape_hex calls: hex_to_bin, hex_to_bin, hex_to_bin,
 hex_to_bin
 
 Component 3:
- unescape_octal calls: isodigit,
+ unescape_octal calls: isodigit, isodigit,
 isodigit
 
 Component 4:
@@ -300,7 +300,6 @@ Effects for function hex_to_bin:
  raises: 
 Effects: doing one iteration...
 Effects: doing one iteration...
-Effects: doing one iteration...
 Effects: fixpoint reached
 Effects for function isodigit:
  reads:  alloc_table: 
@@ -309,7 +308,7 @@ Effects for function isodigit:
          raw memories: 
          precise memories: 
          globals: 
-         locals: \result at (Here), c at (Here)
+         locals: 
 
  writes:  alloc_table: 
           tag_table: 
@@ -342,9 +341,10 @@ Effects for function unescape_hex:
                        (char_xM_12 : mem-field "charM") at (Here)
          precise memories: 
          globals: 
-         locals: __retres at (Here), tmp_0 at (Here), tmp at (Here),
-                 num at (Here), digit at (Here), q at (Here), p at (Here),
-                 \result at (Here), dst_0 at (Here), src_6 at (Here)
+         locals: __retres at (Here), tmp_1 at (Here), tmp_0 at (Here),
+                 tmp at (Here), num at (Here), digit at (Here), q at (Here),
+                 p at (Here), \result at (Here), dst_0 at (Here),
+                 src_6 at (Here)
 
  writes:  alloc_table: 
           tag_table: 
@@ -356,8 +356,9 @@ Effects for function unescape_hex:
                         (char_xM_13 : mem-field "charM") at (Here, Old)
           precise memories: 
           globals: 
-          locals: __retres at (Here), tmp_0 at (Here), tmp at (Here),
-                  num at (Here), digit at (Here), q at (Here), p at (Here)
+          locals: __retres at (Here), tmp_1 at (Here), tmp_0 at (Here),
+                  tmp at (Here), num at (Here), digit at (Here), q at (Here),
+                  p at (Here)
 
  raises: 
 Effects: doing one iteration...
@@ -366,23 +367,24 @@ Effects: doing one iteration...
 Effects: doing one iteration...
 Effects: fixpoint reached
 Effects for function unescape_octal:
- reads:  alloc_table: (char_xM_19 : alloc-root "voidP") at (Here, Old),
-                      (char_xM_18 : alloc-root "voidP") at (Here),
+ reads:  alloc_table: (char_xM_20 : alloc-root "voidP") at (Here, Old),
+                      (char_xM_19 : alloc-root "voidP") at (Here),
                       (dst_1_5 : alloc-root "voidP") at (Here, Old),
                       (src_7_4 : alloc-root "voidP") at (Here, Old)
-         tag_table: (char_xM_19 : voidP) at (Here),
-                    (char_xM_18 : voidP) at (Here)
+         tag_table: (char_xM_20 : voidP) at (Here),
+                    (char_xM_19 : voidP) at (Here)
          memories: (dst_1_5 : mem-field "char_xM") at (Here, Old),
                    (src_7_4 : mem-field "char_xM") at (Here, Old),
-                   (char_xM_19 : mem-field "charM") at (Here),
-                   (char_xM_18 : mem-field "charM") at (Here)
+                   (char_xM_20 : mem-field "charM") at (Here),
+                   (char_xM_19 : mem-field "charM") at (Here)
          raw memories: (dst_1_5 : mem-field "char_xM") at (Here, Old),
                        (src_7_4 : mem-field "char_xM") at (Here, Old),
-                       (char_xM_19 : mem-field "charM") at (Here),
-                       (char_xM_18 : mem-field "charM") at (Here)
+                       (char_xM_20 : mem-field "charM") at (Here),
+                       (char_xM_19 : mem-field "charM") at (Here)
          precise memories: 
          globals: 
-         locals: __retres_0 at (Here), tmp_2 at (Here), tmp_1 at (Here),
+         locals: __retres_0 at (Here), tmp_5 at (Here), tmp_4 at (Here),
+                 tmp_3 at (Here), tmp_2 at (Here), tmp_1_0 at (Here),
                  tmp_0_1 at (Here), tmp_0_0 at (Here), num_0 at (Here),
                  q_0 at (Here), p_0 at (Here), \result at (Here),
                  dst_1 at (Here), src_7 at (Here)
@@ -391,13 +393,14 @@ Effects for function unescape_octal:
           tag_table: 
           memories: (dst_1_5 : mem-field "char_xM") at (Here, Old),
                     (src_7_4 : mem-field "char_xM") at (Here, Old),
-                    (char_xM_19 : mem-field "charM") at (Here, Old)
+                    (char_xM_20 : mem-field "charM") at (Here, Old)
           raw memories: (dst_1_5 : mem-field "char_xM") at (Here, Old),
                         (src_7_4 : mem-field "char_xM") at (Here, Old),
-                        (char_xM_19 : mem-field "charM") at (Here, Old)
+                        (char_xM_20 : mem-field "charM") at (Here, Old)
           precise memories: 
           globals: 
-          locals: __retres_0 at (Here), tmp_2 at (Here), tmp_1 at (Here),
+          locals: __retres_0 at (Here), tmp_5 at (Here), tmp_4 at (Here),
+                  tmp_3 at (Here), tmp_2 at (Here), tmp_1_0 at (Here),
                   tmp_0_1 at (Here), tmp_0_0 at (Here), num_0 at (Here),
                   q_0 at (Here), p_0 at (Here)
 
@@ -408,23 +411,23 @@ Effects: doing one iteration...
 Effects: doing one iteration...
 Effects: fixpoint reached
 Effects for function unescape_space:
- reads:  alloc_table: (char_xM_25 : alloc-root "voidP") at (Here, Old),
-                      (char_xM_24 : alloc-root "voidP") at (Here),
+ reads:  alloc_table: (char_xM_28 : alloc-root "voidP") at (Here, Old),
+                      (char_xM_27 : alloc-root "voidP") at (Here),
                       (dst_2_7 : alloc-root "voidP") at (Here, Old),
                       (src_8_6 : alloc-root "voidP") at (Here, Old)
-         tag_table: (char_xM_25 : voidP) at (Here),
-                    (char_xM_24 : voidP) at (Here)
+         tag_table: (char_xM_28 : voidP) at (Here),
+                    (char_xM_27 : voidP) at (Here)
          memories: (dst_2_7 : mem-field "char_xM") at (Here, Old),
                    (src_8_6 : mem-field "char_xM") at (Here, Old),
-                   (char_xM_25 : mem-field "charM") at (Here),
-                   (char_xM_24 : mem-field "charM") at (Here)
+                   (char_xM_28 : mem-field "charM") at (Here),
+                   (char_xM_27 : mem-field "charM") at (Here)
          raw memories: (dst_2_7 : mem-field "char_xM") at (Here, Old),
                        (src_8_6 : mem-field "char_xM") at (Here, Old),
-                       (char_xM_25 : mem-field "charM") at (Here),
-                       (char_xM_24 : mem-field "charM") at (Here)
+                       (char_xM_28 : mem-field "charM") at (Here),
+                       (char_xM_27 : mem-field "charM") at (Here)
          precise memories: 
          globals: 
-         locals: _jessie_8 at (Here), __retres_1 at (Here), q_1 at (Here),
+         locals: _jessie_11 at (Here), __retres_1 at (Here), q_1 at (Here),
                  p_1 at (Here), \result at (Here), dst_2 at (Here),
                  src_8 at (Here)
 
@@ -432,10 +435,10 @@ Effects for function unescape_space:
           tag_table: 
           memories: (dst_2_7 : mem-field "char_xM") at (Here, Old),
                     (src_8_6 : mem-field "char_xM") at (Here, Old),
-                    (char_xM_25 : mem-field "charM") at (Here, Old)
+                    (char_xM_28 : mem-field "charM") at (Here, Old)
           raw memories: (dst_2_7 : mem-field "char_xM") at (Here, Old),
                         (src_8_6 : mem-field "char_xM") at (Here, Old),
-                        (char_xM_25 : mem-field "charM") at (Here, Old)
+                        (char_xM_28 : mem-field "charM") at (Here, Old)
           precise memories: 
           globals: 
           locals: __retres_1 at (Here), q_1 at (Here), p_1 at (Here)
@@ -447,23 +450,23 @@ Effects: doing one iteration...
 Effects: doing one iteration...
 Effects: fixpoint reached
 Effects for function unescape_special:
- reads:  alloc_table: (char_xM_29 : alloc-root "voidP") at (Here, Old),
-                      (char_xM_28 : alloc-root "voidP") at (Here),
+ reads:  alloc_table: (char_xM_32 : alloc-root "voidP") at (Here, Old),
+                      (char_xM_31 : alloc-root "voidP") at (Here),
                       (dst_3_9 : alloc-root "voidP") at (Here, Old),
                       (src_9_8 : alloc-root "voidP") at (Here, Old)
-         tag_table: (char_xM_29 : voidP) at (Here),
-                    (char_xM_28 : voidP) at (Here)
+         tag_table: (char_xM_32 : voidP) at (Here),
+                    (char_xM_31 : voidP) at (Here)
          memories: (dst_3_9 : mem-field "char_xM") at (Here, Old),
                    (src_9_8 : mem-field "char_xM") at (Here, Old),
-                   (char_xM_29 : mem-field "charM") at (Here),
-                   (char_xM_28 : mem-field "charM") at (Here)
+                   (char_xM_32 : mem-field "charM") at (Here),
+                   (char_xM_31 : mem-field "charM") at (Here)
          raw memories: (dst_3_9 : mem-field "char_xM") at (Here, Old),
                        (src_9_8 : mem-field "char_xM") at (Here, Old),
-                       (char_xM_29 : mem-field "charM") at (Here),
-                       (char_xM_28 : mem-field "charM") at (Here)
+                       (char_xM_32 : mem-field "charM") at (Here),
+                       (char_xM_31 : mem-field "charM") at (Here)
          precise memories: 
          globals: 
-         locals: _jessie_12 at (Here), __retres_2 at (Here), q_2 at (Here),
+         locals: _jessie_15 at (Here), __retres_2 at (Here), q_2 at (Here),
                  p_2 at (Here), \result at (Here), dst_3 at (Here),
                  src_9 at (Here)
 
@@ -471,10 +474,10 @@ Effects for function unescape_special:
           tag_table: 
           memories: (dst_3_9 : mem-field "char_xM") at (Here, Old),
                     (src_9_8 : mem-field "char_xM") at (Here, Old),
-                    (char_xM_29 : mem-field "charM") at (Here, Old)
+                    (char_xM_32 : mem-field "charM") at (Here, Old)
           raw memories: (dst_3_9 : mem-field "char_xM") at (Here, Old),
                         (src_9_8 : mem-field "char_xM") at (Here, Old),
-                        (char_xM_29 : mem-field "charM") at (Here, Old)
+                        (char_xM_32 : mem-field "charM") at (Here, Old)
           precise memories: 
           globals: 
           locals: __retres_2 at (Here), q_2 at (Here), p_2 at (Here)
@@ -545,41 +548,41 @@ all_memories(tag char_xP):
   Found 0 memories.
 Effects: fixpoint reached
 Effects for function string_unescape:
- reads:  alloc_table: (out_34 : alloc-root "voidP") at (Here, Old),
-                      (src_5_32 : alloc-root "voidP") at (Here, Old),
+ reads:  alloc_table: (out_37 : alloc-root "voidP") at (Here, Old),
+                      (src_5_35 : alloc-root "voidP") at (Here, Old),
                       (dst_11 : alloc-root "voidP") at (Here, Old),
                       (v_src_5_10 : alloc-root "voidP") at (Here)
          tag_table: (dst_11 : voidP) at (Here),
                     (v_src_5_10 : voidP) at (Here)
-         memories: (out_34 : mem-field "char_xM") at (Here, Old),
-                   (src_5_32 : mem-field "char_xM") at (Here, Old),
+         memories: (out_37 : mem-field "char_xM") at (Here, Old),
+                   (src_5_35 : mem-field "char_xM") at (Here, Old),
                    (dst_11 : mem-field "charM") at (Here),
                    (v_src_5_10 : mem-field "charM") at (Here)
-         raw memories: (out_34 : mem-field "char_xM") at (Here, Old),
-                       (src_5_32 : mem-field "char_xM") at (Here, Old),
+         raw memories: (out_37 : mem-field "char_xM") at (Here, Old),
+                       (src_5_35 : mem-field "char_xM") at (Here, Old),
                        (dst_11 : mem-field "charM") at (Here),
                        (v_src_5_10 : mem-field "charM") at (Here)
          precise memories: 
          globals: 
-         locals: __retres_3 at (Here), tmp_5 at (Here), tmp_4 at (Here),
-                 tmp_3 at (Here), tmp_2_0 at (Here), tmp_1_0 at (Here),
+         locals: __retres_3 at (Here), tmp_5_0 at (Here), tmp_4_0 at (Here),
+                 tmp_3_0 at (Here), tmp_2_0 at (Here), tmp_1_1 at (Here),
                  tmp_0_3 at (Here), tmp_0_2 at (Here), out at (Here),
                  src_5 at (Here), \result at (Here), flags_0 at (Here),
                  size_2 at (Here, Old), dst at (Here), v_src_5 at (Here)
 
- writes:  alloc_table: (out_34 : alloc-root "voidP") at (Here),
-                       (src_5_32 : alloc-root "voidP") at (Here)
-          tag_table: (out_34 : voidP) at (Here), (src_5_32 : voidP) at (Here)
-          memories: (out_34 : mem-field "char_xM") at (Here, Old),
-                    (src_5_32 : mem-field "char_xM") at (Here, Old),
+ writes:  alloc_table: (out_37 : alloc-root "voidP") at (Here),
+                       (src_5_35 : alloc-root "voidP") at (Here)
+          tag_table: (out_37 : voidP) at (Here), (src_5_35 : voidP) at (Here)
+          memories: (out_37 : mem-field "char_xM") at (Here, Old),
+                    (src_5_35 : mem-field "char_xM") at (Here, Old),
                     (dst_11 : mem-field "charM") at (Here, Old)
-          raw memories: (out_34 : mem-field "char_xM") at (Here, Old),
-                        (src_5_32 : mem-field "char_xM") at (Here, Old),
+          raw memories: (out_37 : mem-field "char_xM") at (Here, Old),
+                        (src_5_35 : mem-field "char_xM") at (Here, Old),
                         (dst_11 : mem-field "charM") at (Here, Old)
           precise memories: 
           globals: 
-          locals: __retres_3 at (Here), tmp_5 at (Here), tmp_4 at (Here),
-                  tmp_3 at (Here), tmp_2_0 at (Here), tmp_1_0 at (Here),
+          locals: __retres_3 at (Here), tmp_5_0 at (Here), tmp_4_0 at (Here),
+                  tmp_3_0 at (Here), tmp_2_0 at (Here), tmp_1_1 at (Here),
                   tmp_0_3 at (Here), tmp_0_2 at (Here), out at (Here),
                   osize at (Here), osrc at (Here), src_5 at (Here),
                   size_2 at (Here)

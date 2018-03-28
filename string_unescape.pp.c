@@ -42,6 +42,7 @@
    disjoint behaviors;*/
 // */
 //  
+
 static bool unescape_hex(char **src, char **dst)
 {
 	char *p = *dst, *q = *src;
@@ -83,6 +84,18 @@ static bool unescape_hex(char **src, char **dst)
 	/*@ assert p == *dst + 1;*/
 	/*@ for one_digit: assert q == (*src + 2); */
 	/*@ for two_digits: assert q == (*src + 3);*/
+
+	num = digit = hex_to_bin(*q++);
+	if (digit < 0)
+		return false;
+
+	digit = hex_to_bin(*q);
+	if (digit >= 0) {
+		q++;
+		num = (num << 4) | digit;
+	}
+	*p = num;
+	*dst += 1;
 	*src = q;
 	return true;
 }
@@ -133,6 +146,7 @@ static bool unescape_hex(char **src, char **dst)
    disjoint behaviors;*/
 // */
 
+
 static bool unescape_octal(char **src, char **dst)
 {
 	char *p = *dst, *q = *src;
@@ -159,12 +173,17 @@ static bool unescape_octal(char **src, char **dst)
 		//CODE CHANGE END
 	}
 // 	
+
+	num = (*q++) & 7;
+	while (num < 32 && isodigit(*q) && (q - *src < 3)) {
+		num <<= 3;
+		num += (*q++) & 7;
+	}
 	*p = num;
 	*dst += 1;
 	*src = q;
 	return true;
 }
-
 
 /*@ axiomatic Un_Space {
     	logic char unescape_space (integer ch);
@@ -257,6 +276,7 @@ static bool unescape_space(char **src, char **dst)
     disjoint behaviors;*/
 // */
 
+
 static bool unescape_special(char **src, char **dst)
 {
 	char *p = *dst, *q = *src;
@@ -331,10 +351,12 @@ int string_unescape(char *src, char *dst, size_t size, unsigned int flags)
 			loop invariant 0 <= size <= osize;
 			loop variant size; 
 		*/
+
 	while (*src && --size) {
 		if (src[0] == '\\' && src[1] != '\0' && size > 1) {
 			src++;
 			size--;
+
 			if (flags & 0x01 &&
 					unescape_space(&src, &out))
 				continue;
@@ -359,4 +381,3 @@ int string_unescape(char *src, char *dst, size_t size, unsigned int flags)
 
 	return out - dst;
 }
-// 

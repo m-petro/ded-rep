@@ -114,59 +114,59 @@ predicate isodigit(integer c_1) =
 int32 isodigit(int8 c)
 behavior default:
   assigns \nothing;
-  ensures (_C_29 : ((\result != 0) <==> isodigit((\at(c,Old) :> integer))));
+  ensures true;
 ;
 
 _bool unescape_hex(char_xP[..] src_6, char_xP[..] dst_0)
-  requires ((_C_126 : ((_C_127 : \at((((\offset_min(\at(src_6,Here)) <=
+  requires ((_C_155 : ((_C_156 : \at((((\offset_min(\at(src_6,Here)) <=
                                          \at(0,Here)) &&
                                         (\offset_max(\at(src_6,Here)) >=
                                           \at(0,Here))) &&
                                        true),Here)) &&
-                        (_C_128 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
+                        (_C_157 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
                                           \at(0,Here)) &&
                                          (\offset_max(\at(src_6.char_xM,Here)) >=
                                            \at(0,Here))) &&
                                         true),Here)))) &&
-             (_C_129 : ((_C_130 : \at((((\offset_min(\at(dst_0,Here)) <=
+             (_C_158 : ((_C_159 : \at((((\offset_min(\at(dst_0,Here)) <=
                                           \at(0,Here)) &&
                                          (\offset_max(\at(dst_0,Here)) >=
                                            \at(0,Here))) &&
                                         true),Here)) &&
-                         (_C_131 : \at((((\offset_min(\at(dst_0.char_xM,Here)) <=
+                         (_C_160 : \at((((\offset_min(\at(dst_0.char_xM,Here)) <=
                                            \at(0,Here)) &&
                                           (\offset_max(\at(dst_0.char_xM,Here)) >=
                                             \at(0,Here))) &&
                                          true),Here)))));
-  requires ((_C_122 : ((_C_123 : (src_6.char_xM.charM == (120 :> int8))) &&
-                        (_C_124 : (! isxdigit(((src_6.char_xM + 1).charM :> integer)))))) ==>
-             (_C_121 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
+  requires ((_C_151 : ((_C_152 : (src_6.char_xM.charM == (120 :> int8))) &&
+                        (_C_153 : (! isxdigit(((src_6.char_xM + 1).charM :> integer)))))) ==>
+             (_C_150 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
                                \at(1,Here)) &&
                               (\offset_max(\at(src_6.char_xM,Here)) >=
                                 \at(1,Here))) &&
                              true),Here)));
-  requires (((_C_118 : (src_6.char_xM.charM == (120 :> int8))) &&
-              ((_C_119 : isxdigit(((src_6.char_xM + 1).charM :> integer))) &&
-                (_C_120 : (! isxdigit(((src_6.char_xM + 2).charM :> integer)))))) ==>
-             ((_C_116 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
+  requires (((_C_147 : (src_6.char_xM.charM == (120 :> int8))) &&
+              ((_C_148 : isxdigit(((src_6.char_xM + 1).charM :> integer))) &&
+                (_C_149 : (! isxdigit(((src_6.char_xM + 2).charM :> integer)))))) ==>
+             ((_C_145 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
                                 \at(1,Here)) &&
                                (\offset_max(\at(src_6.char_xM,Here)) >=
                                  \at(1,Here))) &&
                               true),Here)) &&
-               (_C_117 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
+               (_C_146 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
                                  \at(2,Here)) &&
                                 (\offset_max(\at(src_6.char_xM,Here)) >=
                                   \at(2,Here))) &&
                                true),Here))));
-  requires (((_C_113 : (src_6.char_xM.charM == (120 :> int8))) &&
-              ((_C_114 : isxdigit(((src_6.char_xM + 1).charM :> integer))) &&
-                (_C_115 : isxdigit(((src_6.char_xM + 2).charM :> integer))))) ==>
-             ((_C_111 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
+  requires (((_C_142 : (src_6.char_xM.charM == (120 :> int8))) &&
+              ((_C_143 : isxdigit(((src_6.char_xM + 1).charM :> integer))) &&
+                (_C_144 : isxdigit(((src_6.char_xM + 2).charM :> integer))))) ==>
+             ((_C_140 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
                                 \at(1,Here)) &&
                                (\offset_max(\at(src_6.char_xM,Here)) >=
                                  \at(1,Here))) &&
                               true),Here)) &&
-               (_C_112 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
+               (_C_141 : \at((((\offset_min(\at(src_6.char_xM,Here)) <=
                                  \at(2,Here)) &&
                                 (\offset_max(\at(src_6.char_xM,Here)) >=
                                   \at(2,Here))) &&
@@ -176,16 +176,16 @@ behavior default:
 behavior not_x:
   assumes (src_6.char_xM.charM != (120 :> int8));
   assigns src_6.char_xM;
-  ensures (_C_93 : ((_C_94 : (\at(src_6,Old).char_xM ==
-                               \at((src_6.char_xM + 1),Old))) &&
-                     (_C_95 : (((\result :> integer) != 0) == false))));
+  ensures (_C_122 : ((_C_123 : (\at(src_6,Old).char_xM ==
+                                 \at((src_6.char_xM + 1),Old))) &&
+                      (_C_124 : (((\result :> integer) != 0) == false))));
 behavior not_hex:
   assumes ((src_6.char_xM.charM == (120 :> int8)) &&
             (! isxdigit(((src_6.char_xM + 1).charM :> integer))));
   assigns src_6.char_xM;
-  ensures (_C_96 : ((_C_97 : (\at(src_6,Old).char_xM ==
-                               \at((src_6.char_xM + 2),Old))) &&
-                     (_C_98 : (((\result :> integer) != 0) == false))));
+  ensures (_C_125 : ((_C_126 : (\at(src_6,Old).char_xM ==
+                                 \at((src_6.char_xM + 2),Old))) &&
+                      (_C_127 : (((\result :> integer) != 0) == false))));
 behavior one_digit:
   assumes ((src_6.char_xM.charM == (120 :> int8)) &&
             (isxdigit(((src_6.char_xM + 1).charM :> integer)) &&
@@ -193,13 +193,13 @@ behavior one_digit:
   assigns dst_0.char_xM.charM,
   dst_0.char_xM,
   src_6.char_xM;
-  ensures (_C_99 : ((_C_100 : (\at(dst_0,Old).char_xM ==
-                                \at((dst_0.char_xM + 1),Old))) &&
-                     ((_C_102 : (\at(src_6,Old).char_xM ==
-                                  \at((src_6.char_xM + 2),Old))) &&
-                       ((_C_104 : ((\at(dst_0.char_xM,Old).charM :> integer) ==
-                                    hex_to_bin(((\at(src_6,Old).char_xM + 1).charM :> integer)))) &&
-                         (_C_105 : (((\result :> integer) != 0) == true))))));
+  ensures (_C_128 : ((_C_129 : (\at(dst_0,Old).char_xM ==
+                                 \at((dst_0.char_xM + 1),Old))) &&
+                      ((_C_131 : (\at(src_6,Old).char_xM ==
+                                   \at((src_6.char_xM + 2),Old))) &&
+                        ((_C_133 : ((\at(dst_0.char_xM,Old).charM :> integer) ==
+                                     hex_to_bin(((\at(src_6,Old).char_xM + 1).charM :> integer)))) &&
+                          (_C_134 : (((\result :> integer) != 0) == true))))));
 behavior two_digits:
   assumes ((src_6.char_xM.charM == (120 :> int8)) &&
             (isxdigit(((src_6.char_xM + 1).charM :> integer)) &&
@@ -207,11 +207,11 @@ behavior two_digits:
   assigns dst_0.char_xM.charM,
   dst_0.char_xM,
   src_6.char_xM;
-  ensures (_C_106 : ((_C_107 : (\at(dst_0,Old).char_xM ==
+  ensures (_C_135 : ((_C_136 : (\at(dst_0,Old).char_xM ==
                                  \at((dst_0.char_xM + 1),Old))) &&
-                      ((_C_109 : (\at(src_6,Old).char_xM ==
+                      ((_C_138 : (\at(src_6,Old).char_xM ==
                                    \at((src_6.char_xM + 3),Old))) &&
-                        (_C_110 : (((\result :> integer) != 0) == true)))));
+                        (_C_139 : (((\result :> integer) != 0) == true)))));
 {  
    (check (disjoint_behaviors : (! (((src_6.char_xM.charM == (120 :> int8)) &&
                                       (isxdigit(((src_6.char_xM + 1).charM :> integer)) &&
@@ -268,101 +268,103 @@ behavior two_digits:
    
    (var charP[..] tmp_0);
    
+   (var charP[..] tmp_1);
+   
    (var _bool __retres);
    
-   {  (_C_31 : (p = (_C_30 : dst_0.char_xM)));
-      (_C_33 : (q = (_C_32 : src_6.char_xM)));
+   {  (_C_30 : (p = (_C_29 : dst_0.char_xM)));
+      (_C_32 : (q = (_C_31 : src_6.char_xM)));
       
-      {  (_C_34 : (tmp = q));
-         (_C_36 : (q = (_C_35 : (q + (1 :> int32)))));
+      {  (_C_33 : (tmp = q));
+         (_C_35 : (q = (_C_34 : (q + (1 :> int32)))));
          ()
       };
-      (if (_C_41 : ((_C_40 : ((_C_39 : tmp.charM) :> int32)) !=
+      (if (_C_40 : ((_C_39 : ((_C_38 : tmp.charM) :> int32)) !=
                      (120 :> int32))) then 
-      {  (_C_38 : (__retres = (_C_37 : ((0 :> int32) :> _bool))));
+      {  (_C_37 : (__retres = (_C_36 : ((0 :> int32) :> _bool))));
          
          (goto return_label)
       } else ());
       
       {  
-         (assert for default: (_C_42 : (jessie : (q == (src_6.char_xM + 1)))));
+         (assert for default: (_C_41 : (jessie : (q == (src_6.char_xM + 1)))));
          ()
       };
       
-      {  (_C_43 : (tmp_0 = q));
-         (_C_45 : (q = (_C_44 : (q + (1 :> int32)))));
+      {  (_C_42 : (tmp_0 = q));
+         (_C_44 : (q = (_C_43 : (q + (1 :> int32)))));
          ()
       };
-      (_C_48 : (digit = (_C_47 : hex_to_bin((_C_46 : tmp_0.charM)))));
-      
-      {  
-         (assert for not_hex: (_C_49 : (jessie : (digit == ((- 1) :> int32)))));
-         ()
-      };
+      (_C_47 : (digit = (_C_46 : hex_to_bin((_C_45 : tmp_0.charM)))));
       
       {  
-         (assert for one_digit: (_C_50 : (jessie : (((0 :> int32) <= digit) &&
+         (assert for not_hex: (_C_48 : (jessie : (digit == ((- 1) :> int32)))));
+         ()
+      };
+      
+      {  
+         (assert for one_digit: (_C_49 : (jessie : (((0 :> int32) <= digit) &&
                                                      (digit <= (15 :> int32))))));
          ()
       };
       
       {  
-         (assert for two_digits: (_C_51 : (jessie : (((0 :> int32) <= digit) &&
+         (assert for two_digits: (_C_50 : (jessie : (((0 :> int32) <= digit) &&
                                                       (digit <=
                                                         (15 :> int32))))));
          ()
       };
       
       {  
-         (assert for default: (_C_52 : (jessie : (q == (src_6.char_xM + 2)))));
+         (assert for default: (_C_51 : (jessie : (q == (src_6.char_xM + 2)))));
          ()
       };
       
-      {  (if (_C_55 : (digit < (0 :> int32))) then 
-         {  (_C_54 : (__retres = (_C_53 : ((0 :> int32) :> _bool))));
+      {  (if (_C_54 : (digit < (0 :> int32))) then 
+         {  (_C_53 : (__retres = (_C_52 : ((0 :> int32) :> _bool))));
             
             (goto return_label)
          } else ())
       };
       
       {  
-         (assert for default: (_C_56 : (jessie : (((0 :> int32) <= digit) &&
+         (assert for default: (_C_55 : (jessie : (((0 :> int32) <= digit) &&
                                                    (digit <= (15 :> int32))))));
          ()
       };
-      (_C_58 : (num = (_C_57 : (digit :> uint8))));
+      (_C_57 : (num = (_C_56 : (digit :> uint8))));
       
       {  
-         (assert for default: (_C_59 : (jessie : (((0 :> uint8) <= num) &&
+         (assert for default: (_C_58 : (jessie : (((0 :> uint8) <= num) &&
                                                    (num <= (15 :> uint8))))));
          ()
       };
-      (_C_62 : (digit = (_C_61 : hex_to_bin((_C_60 : q.charM)))));
+      (_C_61 : (digit = (_C_60 : hex_to_bin((_C_59 : q.charM)))));
       
       {  
-         (assert for one_digit: (_C_63 : (jessie : (digit ==
+         (assert for one_digit: (_C_62 : (jessie : (digit ==
                                                      ((- 1) :> int32)))));
          ()
       };
       
       {  
-         (assert for two_digits: (_C_64 : (jessie : (((0 :> int32) <= digit) &&
+         (assert for two_digits: (_C_63 : (jessie : (((0 :> int32) <= digit) &&
                                                       (digit <=
                                                         (15 :> int32))))));
          ()
       };
       
-      {  (if (_C_77 : (digit >= (0 :> int32))) then 
-         {  (_C_66 : (q = (_C_65 : (q + (1 :> int32)))));
+      {  (if (_C_76 : (digit >= (0 :> int32))) then 
+         {  (_C_65 : (q = (_C_64 : (q + (1 :> int32)))));
             
             {  
-               (assert for default: (_C_67 : (jessie : (q ==
+               (assert for default: (_C_66 : (jessie : (q ==
                                                          (src_6.char_xM + 3)))));
                ()
             };
             
             {  
-               (assert for default: (_C_68 : (jessie : (((0 :> int32) <=
+               (assert for default: (_C_67 : (jessie : (((0 :> int32) <=
                                                           digit) &&
                                                          (digit <=
                                                            (15 :> int32))))));
@@ -370,96 +372,123 @@ behavior two_digits:
             };
             
             {  
-               (assert for default: (_C_69 : (jessie : (((0 :> uint8) <= num) &&
+               (assert for default: (_C_68 : (jessie : (((0 :> uint8) <= num) &&
                                                          (num <=
                                                            (15 :> uint8))))));
                ()
             };
-            (_C_73 : (num = (_C_72 : ((_C_71 : ((_C_70 : (num :> int32)) *
+            (_C_72 : (num = (_C_71 : ((_C_70 : ((_C_69 : (num :> int32)) *
                                                  (16 :> int32))) :> uint8))));
             
             {  
-               (assert for default: (_C_74 : (jessie : (((0 :> uint8) <= num) &&
+               (assert for default: (_C_73 : (jessie : (((0 :> uint8) <= num) &&
                                                          ((num :> integer) <=
                                                            (15 * 16))))));
                ()
             };
-            (_C_76 : (num = (_C_75 : (digit :> uint8))))
+            (_C_75 : (num = (_C_74 : (digit :> uint8))))
          } else ())
       };
-      (_C_80 : ((_C_79 : p.charM) = (_C_78 : (num :> int8))));
+      (_C_79 : ((_C_78 : p.charM) = (_C_77 : (num :> int8))));
       
       {  
-         (assert for default: (_C_81 : (jessie : (p == dst_0.char_xM))));
+         (assert for default: (_C_80 : (jessie : (p == dst_0.char_xM))));
          ()
       };
-      (_C_85 : ((_C_84 : dst_0.char_xM) = (_C_83 : ((_C_82 : dst_0.char_xM) +
+      (_C_84 : ((_C_83 : dst_0.char_xM) = (_C_82 : ((_C_81 : dst_0.char_xM) +
                                                      (1 :> int32)))));
       
       {  
-         (assert for default: (_C_86 : (jessie : (p == (dst_0.char_xM + 1)))));
+         (assert for default: (_C_85 : (jessie : (p == (dst_0.char_xM + 1)))));
          ()
       };
       
       {  
-         (assert for one_digit: (_C_87 : (jessie : (q == (src_6.char_xM + 2)))));
+         (assert for one_digit: (_C_86 : (jessie : (q == (src_6.char_xM + 2)))));
          ()
       };
       
       {  
-         (assert for two_digits: (_C_88 : (jessie : (q ==
+         (assert for two_digits: (_C_87 : (jessie : (q ==
                                                       (src_6.char_xM + 3)))));
          ()
       };
-      (_C_90 : ((_C_89 : src_6.char_xM) = q));
-      (_C_92 : (__retres = (_C_91 : ((1 :> int32) :> _bool))));
+      
+      {  
+         {  
+            {  (_C_88 : (tmp_1 = q));
+               (_C_90 : (q = (_C_89 : (q + (1 :> int32)))));
+               ()
+            };
+            (_C_93 : (digit = (_C_92 : hex_to_bin((_C_91 : tmp_1.charM)))))
+         };
+         (_C_95 : (num = (_C_94 : (digit :> uint8))))
+      };
+      (if (_C_98 : (digit < (0 :> int32))) then 
+      {  (_C_97 : (__retres = (_C_96 : ((0 :> int32) :> _bool))));
+         
+         (goto return_label)
+      } else ());
+      (_C_101 : (digit = (_C_100 : hex_to_bin((_C_99 : q.charM)))));
+      (if (_C_110 : (digit >= (0 :> int32))) then 
+      {  (_C_103 : (q = (_C_102 : (q + (1 :> int32)))));
+         (_C_109 : (num = (_C_108 : ((_C_107 : ((_C_106 : ((_C_105 : 
+                                                           ((_C_104 : (num :> int32)) <<
+                                                             (4 :> int32))) :> int32)) |
+                                                 digit)) :> uint8))))
+      } else ());
+      (_C_113 : ((_C_112 : p.charM) = (_C_111 : (num :> int8))));
+      (_C_117 : ((_C_116 : dst_0.char_xM) = (_C_115 : ((_C_114 : dst_0.char_xM) +
+                                                        (1 :> int32)))));
+      (_C_119 : ((_C_118 : src_6.char_xM) = q));
+      (_C_121 : (__retres = (_C_120 : ((1 :> int32) :> _bool))));
       (return_label : 
       (return __retres))
    }
 }
 
 _bool unescape_octal(char_xP[..] src_7, char_xP[..] dst_1)
-  requires ((_C_229 : ((_C_230 : \at((((\offset_min(\at(src_7,Here)) <=
+  requires ((_C_291 : ((_C_292 : \at((((\offset_min(\at(src_7,Here)) <=
                                          \at(0,Here)) &&
                                         (\offset_max(\at(src_7,Here)) >=
                                           \at(0,Here))) &&
                                        true),Here)) &&
-                        (_C_231 : \at((((\offset_min(\at(src_7.char_xM,Here)) <=
+                        (_C_293 : \at((((\offset_min(\at(src_7.char_xM,Here)) <=
                                           \at(0,Here)) &&
                                          (\offset_max(\at(src_7.char_xM,Here)) >=
                                            \at(0,Here))) &&
                                         true),Here)))) &&
-             ((_C_232 : ((_C_233 : \at((((\offset_min(\at(dst_1,Here)) <=
+             ((_C_294 : ((_C_295 : \at((((\offset_min(\at(dst_1,Here)) <=
                                            \at(0,Here)) &&
                                           (\offset_max(\at(dst_1,Here)) >=
                                             \at(0,Here))) &&
                                          true),Here)) &&
-                          (_C_234 : \at((((\offset_min(\at(dst_1.char_xM,Here)) <=
+                          (_C_296 : \at((((\offset_min(\at(dst_1.char_xM,Here)) <=
                                             \at(0,Here)) &&
                                            (\offset_max(\at(dst_1.char_xM,Here)) >=
                                              \at(0,Here))) &&
                                           true),Here)))) &&
-               ((_C_235 : (isodigit((src_7.char_xM.charM :> integer)) ==>
+               ((_C_297 : (isodigit((src_7.char_xM.charM :> integer)) ==>
                             \at((((\offset_min(\at(src_7.char_xM,Here)) <=
                                     \at(1,Here)) &&
                                    (\offset_max(\at(src_7.char_xM,Here)) >=
                                      \at(1,Here))) &&
                                   true),Here))) &&
-                 ((_C_236 : (isodigit(((src_7.char_xM + 1).charM :> integer)) ==>
+                 ((_C_298 : (isodigit(((src_7.char_xM + 1).charM :> integer)) ==>
                               \at((((\offset_min(\at(src_7.char_xM,Here)) <=
                                       \at(2,Here)) &&
                                      (\offset_max(\at(src_7.char_xM,Here)) >=
                                        \at(2,Here))) &&
                                     true),Here))) &&
-                   (_C_237 : (isodigit(((src_7.char_xM + 2).charM :> integer)) ==>
+                   (_C_299 : (isodigit(((src_7.char_xM + 2).charM :> integer)) ==>
                                \at((((\offset_min(\at(src_7.char_xM,Here)) <=
                                        \at(3,Here)) &&
                                       (\offset_max(\at(src_7.char_xM,Here)) >=
                                         \at(3,Here))) &&
                                      true),Here)))))));
-  requires (((_C_226 : isodigit((src_7.char_xM.charM :> integer))) &&
-              (_C_227 : (! isodigit(((src_7.char_xM + 1).charM :> integer))))) ==>
-             (_C_225 : \at((((\offset_min(\at(src_7.char_xM,Here)) <=
+  requires (((_C_288 : isodigit((src_7.char_xM.charM :> integer))) &&
+              (_C_289 : (! isodigit(((src_7.char_xM + 1).charM :> integer))))) ==>
+             (_C_287 : \at((((\offset_min(\at(src_7.char_xM,Here)) <=
                                \at(1,Here)) &&
                               (\offset_max(\at(src_7.char_xM,Here)) >=
                                 \at(1,Here))) &&
@@ -469,20 +498,20 @@ behavior default:
 behavior not_octal:
   assumes (! isodigit((src_7.char_xM.charM :> integer)));
   assigns \nothing;
-  ensures (_C_197 : (((\result :> integer) != 0) == false));
+  ensures (_C_259 : (((\result :> integer) != 0) == false));
 behavior one_digit:
   assumes (isodigit((src_7.char_xM.charM :> integer)) &&
             (! isodigit(((src_7.char_xM + 1).charM :> integer))));
   assigns dst_1.char_xM.charM,
   dst_1.char_xM,
   src_7.char_xM;
-  ensures (_C_198 : ((_C_199 : (\at(dst_1,Old).char_xM ==
+  ensures (_C_260 : ((_C_261 : (\at(dst_1,Old).char_xM ==
                                  \at((dst_1.char_xM + 1),Old))) &&
-                      ((_C_201 : (\at(src_7,Old).char_xM ==
+                      ((_C_263 : (\at(src_7,Old).char_xM ==
                                    \at((src_7.char_xM + 1),Old))) &&
-                        ((_C_203 : (\at(dst_1.char_xM,Old).charM ==
+                        ((_C_265 : (\at(dst_1.char_xM,Old).charM ==
                                      \at(src_7,Old).char_xM.charM)) &&
-                          (_C_204 : (((\result :> integer) != 0) == true))))));
+                          (_C_266 : (((\result :> integer) != 0) == true))))));
 behavior two_digits:
   assumes (isodigit((src_7.char_xM.charM :> integer)) &&
             (isodigit(((src_7.char_xM + 1).charM :> integer)) &&
@@ -490,15 +519,15 @@ behavior two_digits:
   assigns dst_1.char_xM.charM,
   dst_1.char_xM,
   src_7.char_xM;
-  ensures (_C_205 : ((_C_206 : (\at(dst_1,Old).char_xM ==
+  ensures (_C_267 : ((_C_268 : (\at(dst_1,Old).char_xM ==
                                  \at((dst_1.char_xM + 1),Old))) &&
-                      ((_C_208 : (\at(src_7,Old).char_xM ==
+                      ((_C_270 : (\at(src_7,Old).char_xM ==
                                    \at((src_7.char_xM + 2),Old))) &&
-                        ((_C_210 : ((\at(dst_1.char_xM,Old).charM :> integer) ==
+                        ((_C_272 : ((\at(dst_1.char_xM,Old).charM :> integer) ==
                                      ((\at(src_7,Old).char_xM.charM :> integer) +
                                        (8 *
                                          (\at((src_7.char_xM + 1),Old).charM :> integer))))) &&
-                          (_C_211 : (((\result :> integer) != 0) == true))))));
+                          (_C_273 : (((\result :> integer) != 0) == true))))));
 behavior three_digits:
   assumes (isodigit((src_7.char_xM.charM :> integer)) &&
             (isodigit(((src_7.char_xM + 1).charM :> integer)) &&
@@ -506,17 +535,17 @@ behavior three_digits:
   assigns dst_1.char_xM.charM,
   dst_1.char_xM,
   src_7.char_xM;
-  ensures (_C_212 : ((_C_213 : (\at(dst_1,Old).char_xM ==
+  ensures (_C_274 : ((_C_275 : (\at(dst_1,Old).char_xM ==
                                  \at((dst_1.char_xM + 1),Old))) &&
-                      ((_C_215 : (\at(src_7,Old).char_xM ==
+                      ((_C_277 : (\at(src_7,Old).char_xM ==
                                    \at((src_7.char_xM + 3),Old))) &&
-                        ((_C_217 : ((\at(dst_1.char_xM,Old).charM :> integer) ==
+                        ((_C_279 : ((\at(dst_1.char_xM,Old).charM :> integer) ==
                                      (((\at(src_7,Old).char_xM.charM :> integer) +
                                         (8 *
                                           (\at((src_7.char_xM + 1),Old).charM :> integer))) +
                                        (64 *
                                          (\at((src_7.char_xM + 2),Old).charM :> integer))))) &&
-                          (_C_218 : (((\result :> integer) != 0) == true))))));
+                          (_C_280 : (((\result :> integer) != 0) == true))))));
 {  
    (check (disjoint_behaviors : (! ((isodigit((src_7.char_xM.charM :> integer)) &&
                                       (isodigit(((src_7.char_xM + 1).charM :> integer)) &&
@@ -571,84 +600,127 @@ behavior three_digits:
    
    (var charP[..] tmp_0_1);
    
-   (var charP[..] tmp_1);
+   (var charP[..] tmp_1_0);
    
    (var int32 tmp_2);
    
+   (var charP[..] tmp_3);
+   
+   (var charP[..] tmp_4);
+   
+   (var int32 tmp_5);
+   
    (var _bool __retres_0);
    
-   {  (_C_133 : (p_0 = (_C_132 : dst_1.char_xM)));
-      (_C_135 : (q_0 = (_C_134 : src_7.char_xM)));
-      (_C_138 : (tmp_0_0 = (_C_137 : isodigit((_C_136 : q_0.charM)))));
-      (if (_C_141 : (tmp_0_0 == (0 :> int32))) then 
-      {  (_C_140 : (__retres_0 = (_C_139 : ((0 :> int32) :> _bool))));
+   {  (_C_162 : (p_0 = (_C_161 : dst_1.char_xM)));
+      (_C_164 : (q_0 = (_C_163 : src_7.char_xM)));
+      (_C_167 : (tmp_0_0 = (_C_166 : isodigit((_C_165 : q_0.charM)))));
+      (if (_C_170 : (tmp_0_0 == (0 :> int32))) then 
+      {  (_C_169 : (__retres_0 = (_C_168 : ((0 :> int32) :> _bool))));
          
          (goto return_label)
       } else ());
       
-      {  (_C_142 : (tmp_0_1 = q_0));
-         (_C_144 : (q_0 = (_C_143 : (q_0 + (1 :> int32)))));
-         (_C_149 : (num_0 = (_C_148 : ((_C_147 : ((_C_146 : ((_C_145 : tmp_0_1.charM) :> int32)) %
+      {  (_C_171 : (tmp_0_1 = q_0));
+         (_C_173 : (q_0 = (_C_172 : (q_0 + (1 :> int32)))));
+         (_C_178 : (num_0 = (_C_177 : ((_C_176 : ((_C_175 : ((_C_174 : tmp_0_1.charM) :> int32)) %
                                                    (7 :> int32))) :> uint8))))
       };
       
       {  
-         (assert for default: (_C_150 : (jessie : (q_0 ==
+         (assert for default: (_C_179 : (jessie : (q_0 ==
                                                     (src_7.char_xM + 1)))));
          ()
       };
       
       {  
-         (assert for default: (_C_151 : (jessie : (((0 :> uint8) <= num_0) &&
+         (assert for default: (_C_180 : (jessie : (((0 :> uint8) <= num_0) &&
                                                     (num_0 <= (6 :> uint8))))));
          ()
       };
       
       loop 
       behavior default:
-        invariant (_C_154 : (((_C_156 : (\base_block(src_7.char_xM) ==
+        invariant (_C_183 : (((_C_185 : (\base_block(src_7.char_xM) ==
                                           \base_block(q_0))) &&
-                               (_C_157 : ((src_7.char_xM - q_0) < 0))) &&
-                              ((_C_159 : (\base_block(q_0) ==
+                               (_C_186 : ((src_7.char_xM - q_0) < 0))) &&
+                              ((_C_188 : (\base_block(q_0) ==
                                            \base_block((src_7.char_xM + 3)))) &&
-                                (_C_160 : ((q_0 - (src_7.char_xM + 3)) <= 0)))));
+                                (_C_189 : ((q_0 - (src_7.char_xM + 3)) <= 0)))));
       behavior default:
-        invariant (_C_153 : ((num_0 :> integer) < (32 * 8)));
-      variant (_C_152 : (3 - (q_0 - src_7.char_xM)));
+        invariant (_C_182 : ((num_0 :> integer) < (32 * 8)));
+      variant (_C_181 : (3 - (q_0 - src_7.char_xM)));
       while (true)
       {  
-         {  (if (_C_170 : ((_C_169 : (num_0 :> int32)) < (32 :> int32))) then 
-            {  (_C_163 : (tmp_2 = (_C_162 : isodigit((_C_161 : q_0.charM)))));
-               (if (_C_168 : ((tmp_2 :> int32) != (0 :> int32))) then 
-               (if (_C_167 : ((_C_166 : ((_C_165 : (q_0 -
-                                                     (_C_164 : src_7.char_xM))) :> int32)) <
+         {  (if (_C_199 : ((_C_198 : (num_0 :> int32)) < (32 :> int32))) then 
+            {  (_C_192 : (tmp_2 = (_C_191 : isodigit((_C_190 : q_0.charM)))));
+               (if (_C_197 : ((tmp_2 :> int32) != (0 :> int32))) then 
+               (if (_C_196 : ((_C_195 : ((_C_194 : (q_0 -
+                                                     (_C_193 : src_7.char_xM))) :> int32)) <
                                (3 :> int32))) then () else 
                (goto while_0_break)) else 
                (goto while_0_break))
             } else 
             (goto while_0_break));
             
-            {  (_C_174 : (num_0 = (_C_173 : ((_C_172 : ((_C_171 : (num_0 :> int32)) *
+            {  (_C_203 : (num_0 = (_C_202 : ((_C_201 : ((_C_200 : (num_0 :> int32)) *
                                                          (8 :> int32))) :> uint8))));
                
-               {  (_C_175 : (tmp_1 = q_0));
-                  (_C_177 : (q_0 = (_C_176 : (q_0 + (1 :> int32)))));
-                  (_C_185 : (num_0 = (_C_184 : ((_C_183 : ((_C_182 : (num_0 :> int32)) +
-                                                            (_C_181 : (
-                                                            (_C_180 : 
-                                                            ((_C_179 : (
-                                                             (_C_178 : tmp_1.charM) :> int32)) %
+               {  (_C_204 : (tmp_1_0 = q_0));
+                  (_C_206 : (q_0 = (_C_205 : (q_0 + (1 :> int32)))));
+                  (_C_214 : (num_0 = (_C_213 : ((_C_212 : ((_C_211 : (num_0 :> int32)) +
+                                                            (_C_210 : (
+                                                            (_C_209 : 
+                                                            ((_C_208 : (
+                                                             (_C_207 : tmp_1_0.charM) :> int32)) %
                                                               (7 :> int32))) :> int32)))) :> uint8))))
                }
             }
          }
       };
       (while_0_break : ());
-      (_C_188 : ((_C_187 : p_0.charM) = (_C_186 : (num_0 :> int8))));
-      (_C_192 : ((_C_191 : dst_1.char_xM) = (_C_190 : ((_C_189 : dst_1.char_xM) +
+      
+      {  (_C_215 : (tmp_3 = q_0));
+         (_C_217 : (q_0 = (_C_216 : (q_0 + (1 :> int32)))));
+         (_C_222 : (num_0 = (_C_221 : ((_C_220 : ((_C_219 : ((_C_218 : tmp_3.charM) :> int32)) &
+                                                   (7 :> int32))) :> uint8))))
+      };
+      
+      loop 
+      while (true)
+      {  
+         {  (if (_C_232 : ((_C_231 : (num_0 :> int32)) < (32 :> int32))) then 
+            {  (_C_225 : (tmp_5 = (_C_224 : isodigit((_C_223 : q_0.charM)))));
+               (if (_C_230 : ((tmp_5 :> int32) != (0 :> int32))) then 
+               (if (_C_229 : ((_C_228 : ((_C_227 : (q_0 -
+                                                     (_C_226 : src_7.char_xM))) :> int32)) <
+                               (3 :> int32))) then () else 
+               (goto while_1_break)) else 
+               (goto while_1_break))
+            } else 
+            (goto while_1_break));
+            
+            {  (_C_236 : (num_0 = (_C_235 : ((_C_234 : ((_C_233 : (num_0 :> int32)) <<
+                                                         (3 :> int32))) :> uint8))));
+               
+               {  (_C_237 : (tmp_4 = q_0));
+                  (_C_239 : (q_0 = (_C_238 : (q_0 + (1 :> int32)))));
+                  (_C_247 : (num_0 = (_C_246 : ((_C_245 : ((_C_244 : (num_0 :> int32)) +
+                                                            (_C_243 : (
+                                                            (_C_242 : 
+                                                            ((_C_241 : (
+                                                             (_C_240 : tmp_4.charM) :> int32)) &
+                                                              (7 :> int32))) :> int32)))) :> uint8))))
+               }
+            }
+         }
+      };
+      (while_1_break : ());
+      (_C_250 : ((_C_249 : p_0.charM) = (_C_248 : (num_0 :> int8))));
+      (_C_254 : ((_C_253 : dst_1.char_xM) = (_C_252 : ((_C_251 : dst_1.char_xM) +
                                                         (1 :> int32)))));
-      (_C_194 : ((_C_193 : src_7.char_xM) = q_0));
-      (_C_196 : (__retres_0 = (_C_195 : ((1 :> int32) :> _bool))));
+      (_C_256 : ((_C_255 : src_7.char_xM) = q_0));
+      (_C_258 : (__retres_0 = (_C_257 : ((1 :> int32) :> _bool))));
       (return_label : 
       (return __retres_0))
    }
@@ -659,39 +731,39 @@ axiomatic Un_Space {
   logic int8 unescape_space(integer ch_0)
    
   axiom N :
-  (_C_238 : (unescape_space(((110 :> int8) :> integer)) == (10 :> int8)))
+  (_C_300 : (unescape_space(((110 :> int8) :> integer)) == (10 :> int8)))
    
   axiom R :
-  (_C_239 : (unescape_space(((114 :> int8) :> integer)) == (13 :> int8)))
+  (_C_301 : (unescape_space(((114 :> int8) :> integer)) == (13 :> int8)))
    
   axiom T :
-  (_C_240 : (unescape_space(((116 :> int8) :> integer)) == (9 :> int8)))
+  (_C_302 : (unescape_space(((116 :> int8) :> integer)) == (9 :> int8)))
    
   axiom V :
-  (_C_241 : (unescape_space(((118 :> int8) :> integer)) == (11 :> int8)))
+  (_C_303 : (unescape_space(((118 :> int8) :> integer)) == (11 :> int8)))
    
   axiom F :
-  (_C_242 : (unescape_space(((102 :> int8) :> integer)) == (12 :> int8)))
+  (_C_304 : (unescape_space(((102 :> int8) :> integer)) == (12 :> int8)))
   
 }
 
 _bool unescape_space(char_xP[..] src_8, char_xP[..] dst_2)
-  requires (_C_299 : ((((_C_302 : \at((((\offset_min(\at(src_8,Here)) <=
+  requires (_C_361 : ((((_C_364 : \at((((\offset_min(\at(src_8,Here)) <=
                                           \at(0,Here)) &&
                                          (\offset_max(\at(src_8,Here)) >=
                                            \at(0,Here))) &&
                                         true),Here)) &&
-                         (_C_303 : \at((((\offset_min(\at(dst_2,Here)) <=
+                         (_C_365 : \at((((\offset_min(\at(dst_2,Here)) <=
                                            \at(0,Here)) &&
                                           (\offset_max(\at(dst_2,Here)) >=
                                             \at(0,Here))) &&
                                          true),Here))) &&
-                        (_C_304 : \at((((\offset_min(\at(src_8.char_xM,Here)) <=
+                        (_C_366 : \at((((\offset_min(\at(src_8.char_xM,Here)) <=
                                           \at(0,Here)) &&
                                          (\offset_max(\at(src_8.char_xM,Here)) >=
                                            \at(0,Here))) &&
                                         true),Here))) &&
-                       (_C_305 : \at((((\offset_min(\at(dst_2.char_xM,Here)) <=
+                       (_C_367 : \at((((\offset_min(\at(dst_2.char_xM,Here)) <=
                                          \at(0,Here)) &&
                                         (\offset_max(\at(dst_2.char_xM,Here)) >=
                                           \at(0,Here))) &&
@@ -707,13 +779,13 @@ behavior is_space:
               (src_8.char_xM.charM == (114 :> int8))) ||
              (src_8.char_xM.charM == (118 :> int8))) ||
             (src_8.char_xM.charM == (102 :> int8)));
-  ensures (_C_281 : ((_C_282 : ((\result :> uint32) ==
+  ensures (_C_343 : ((_C_344 : ((\result :> uint32) ==
                                  ((1 :> __anonenum_2) :> uint32))) &&
-                      ((_C_284 : (\at(dst_2,Old).char_xM ==
+                      ((_C_346 : (\at(dst_2,Old).char_xM ==
                                    \at((dst_2.char_xM + 1),Old))) &&
-                        ((_C_286 : (\at(src_8,Old).char_xM ==
+                        ((_C_348 : (\at(src_8,Old).char_xM ==
                                      \at((src_8.char_xM + 1),Old))) &&
-                          (_C_287 : ((\at(dst_2,Old).char_xM - 1).charM ==
+                          (_C_349 : ((\at(dst_2,Old).char_xM - 1).charM ==
                                       unescape_space(((\at(src_8,Old).char_xM -
                                                         1).charM :> integer))))))));
 behavior fail:
@@ -722,7 +794,7 @@ behavior fail:
               (src_8.char_xM.charM != (114 :> int8))) &&
              (src_8.char_xM.charM != (118 :> int8))) &&
             (src_8.char_xM.charM != (102 :> int8)));
-  ensures (_C_288 : ((\result :> uint32) == ((0 :> __anonenum_2) :> uint32)));
+  ensures (_C_350 : ((\result :> uint32) == ((0 :> __anonenum_2) :> uint32)));
 {  
    (check (disjoint_behaviors : (! ((((((src_8.char_xM.charM ==
                                           (110 :> int8)) ||
@@ -759,48 +831,48 @@ behavior fail:
    
    (var _bool __retres_1);
    
-   {  (_C_244 : (p_1 = (_C_243 : dst_2.char_xM)));
-      (_C_246 : (q_1 = (_C_245 : src_8.char_xM)));
+   {  (_C_306 : (p_1 = (_C_305 : dst_2.char_xM)));
+      (_C_308 : (q_1 = (_C_307 : src_8.char_xM)));
       
-      switch ((_C_270 : ((_C_269 : q_1.charM) :> int32))) {
-        case (_C_247 : (110 :> int32)):
-        {  (_C_250 : ((_C_249 : p_1.charM) = (_C_248 : ((10 :> int32) :> int8))));
+      switch ((_C_332 : ((_C_331 : q_1.charM) :> int32))) {
+        case (_C_309 : (110 :> int32)):
+        {  (_C_312 : ((_C_311 : p_1.charM) = (_C_310 : ((10 :> int32) :> int8))));
            
            (goto switch_0_break)
         }
-        case (_C_251 : (114 :> int32)):
-        {  (_C_254 : ((_C_253 : p_1.charM) = (_C_252 : ((13 :> int32) :> int8))));
+        case (_C_313 : (114 :> int32)):
+        {  (_C_316 : ((_C_315 : p_1.charM) = (_C_314 : ((13 :> int32) :> int8))));
            
            (goto switch_0_break)
         }
-        case (_C_255 : (116 :> int32)):
-        {  (_C_258 : ((_C_257 : p_1.charM) = (_C_256 : ((9 :> int32) :> int8))));
+        case (_C_317 : (116 :> int32)):
+        {  (_C_320 : ((_C_319 : p_1.charM) = (_C_318 : ((9 :> int32) :> int8))));
            
            (goto switch_0_break)
         }
-        case (_C_259 : (118 :> int32)):
-        {  (_C_262 : ((_C_261 : p_1.charM) = (_C_260 : ((11 :> int32) :> int8))));
+        case (_C_321 : (118 :> int32)):
+        {  (_C_324 : ((_C_323 : p_1.charM) = (_C_322 : ((11 :> int32) :> int8))));
            
            (goto switch_0_break)
         }
-        case (_C_263 : (102 :> int32)):
-        {  (_C_266 : ((_C_265 : p_1.charM) = (_C_264 : ((12 :> int32) :> int8))));
+        case (_C_325 : (102 :> int32)):
+        {  (_C_328 : ((_C_327 : p_1.charM) = (_C_326 : ((12 :> int32) :> int8))));
            
            (goto switch_0_break)
         }
         default:
         {  ();
-           (_C_268 : (__retres_1 = (_C_267 : ((0 :> int32) :> _bool))));
+           (_C_330 : (__retres_1 = (_C_329 : ((0 :> int32) :> _bool))));
            
            (goto return_label)
         }
       };
       (switch_0_break : ());
-      (_C_274 : ((_C_273 : dst_2.char_xM) = (_C_272 : ((_C_271 : dst_2.char_xM) +
+      (_C_336 : ((_C_335 : dst_2.char_xM) = (_C_334 : ((_C_333 : dst_2.char_xM) +
                                                         (1 :> int32)))));
-      (_C_278 : ((_C_277 : src_8.char_xM) = (_C_276 : ((_C_275 : src_8.char_xM) +
+      (_C_340 : ((_C_339 : src_8.char_xM) = (_C_338 : ((_C_337 : src_8.char_xM) +
                                                         (1 :> int32)))));
-      (_C_280 : (__retres_1 = (_C_279 : ((1 :> int32) :> _bool))));
+      (_C_342 : (__retres_1 = (_C_341 : ((1 :> int32) :> _bool))));
       (return_label : 
       (return __retres_1))
    }
@@ -811,16 +883,16 @@ axiomatic Un_Special {
   logic int8 unescape_special(int8 ch_1)
    
   axiom S :
-  (_C_306 : (unescape_special((34 :> int8)) == (34 :> int8)))
+  (_C_368 : (unescape_special((34 :> int8)) == (34 :> int8)))
    
   axiom SS :
-  (_C_307 : (unescape_special((92 :> int8)) == (92 :> int8)))
+  (_C_369 : (unescape_special((92 :> int8)) == (92 :> int8)))
    
   axiom E :
-  (_C_308 : (unescape_special((101 :> int8)) == (23653 :> int8)))
+  (_C_370 : (unescape_special((101 :> int8)) == (23653 :> int8)))
    
   axiom A :
-  (_C_309 : (unescape_special((97 :> int8)) == (7 :> int8)))
+  (_C_371 : (unescape_special((97 :> int8)) == (7 :> int8)))
   
 }
 
@@ -830,22 +902,22 @@ predicate is_special(integer c_2) =
   (c_2 == ((97 :> int8) :> integer)))
 
 _bool unescape_special(char_xP[..] src_9, char_xP[..] dst_3)
-  requires (_C_360 : ((((_C_363 : \at((((\offset_min(\at(src_9,Here)) <=
+  requires (_C_422 : ((((_C_425 : \at((((\offset_min(\at(src_9,Here)) <=
                                           \at(0,Here)) &&
                                          (\offset_max(\at(src_9,Here)) >=
                                            \at(0,Here))) &&
                                         true),Here)) &&
-                         (_C_364 : \at((((\offset_min(\at(dst_3,Here)) <=
+                         (_C_426 : \at((((\offset_min(\at(dst_3,Here)) <=
                                            \at(0,Here)) &&
                                           (\offset_max(\at(dst_3,Here)) >=
                                             \at(0,Here))) &&
                                          true),Here))) &&
-                        (_C_365 : \at((((\offset_min(\at(src_9.char_xM,Here)) <=
+                        (_C_427 : \at((((\offset_min(\at(src_9.char_xM,Here)) <=
                                           \at(0,Here)) &&
                                          (\offset_max(\at(src_9.char_xM,Here)) >=
                                            \at(0,Here))) &&
                                         true),Here))) &&
-                       (_C_366 : \at((((\offset_min(\at(dst_3.char_xM,Here)) <=
+                       (_C_428 : \at((((\offset_min(\at(dst_3.char_xM,Here)) <=
                                          \at(0,Here)) &&
                                         (\offset_max(\at(dst_3.char_xM,Here)) >=
                                           \at(0,Here))) &&
@@ -860,13 +932,13 @@ behavior is_special:
               (src_9.char_xM.charM == (92 :> int8))) ||
              (src_9.char_xM.charM == (101 :> int8))) ||
             (src_9.char_xM.charM == (97 :> int8)));
-  ensures (_C_344 : ((_C_345 : ((\result :> uint32) ==
+  ensures (_C_406 : ((_C_407 : ((\result :> uint32) ==
                                  ((1 :> __anonenum_2) :> uint32))) &&
-                      ((_C_347 : (\at(dst_3,Old).char_xM ==
+                      ((_C_409 : (\at(dst_3,Old).char_xM ==
                                    \at((dst_3.char_xM + 1),Old))) &&
-                        ((_C_349 : (\at(src_9,Old).char_xM ==
+                        ((_C_411 : (\at(src_9,Old).char_xM ==
                                      \at((src_9.char_xM + 1),Old))) &&
-                          (_C_350 : ((\at(dst_3,Old).char_xM - 1).charM ==
+                          (_C_412 : ((\at(dst_3,Old).char_xM - 1).charM ==
                                       unescape_special((\at(src_9,Old).char_xM -
                                                          1).charM)))))));
 behavior fail:
@@ -874,7 +946,7 @@ behavior fail:
               (src_9.char_xM.charM != (92 :> int8))) &&
              (src_9.char_xM.charM != (101 :> int8))) &&
             (src_9.char_xM.charM != (97 :> int8)));
-  ensures (_C_351 : ((\result :> uint32) == ((0 :> __anonenum_2) :> uint32)));
+  ensures (_C_413 : ((\result :> uint32) == ((0 :> __anonenum_2) :> uint32)));
 {  
    (check (disjoint_behaviors : (! (((((src_9.char_xM.charM == (34 :> int8)) ||
                                         (src_9.char_xM.charM == (92 :> int8))) ||
@@ -902,43 +974,43 @@ behavior fail:
    
    (var _bool __retres_2);
    
-   {  (_C_311 : (p_2 = (_C_310 : dst_3.char_xM)));
-      (_C_313 : (q_2 = (_C_312 : src_9.char_xM)));
+   {  (_C_373 : (p_2 = (_C_372 : dst_3.char_xM)));
+      (_C_375 : (q_2 = (_C_374 : src_9.char_xM)));
       
-      switch ((_C_333 : ((_C_332 : q_2.charM) :> int32))) {
-        case (_C_314 : (34 :> int32)):
-        {  (_C_317 : ((_C_316 : p_2.charM) = (_C_315 : ((34 :> int32) :> int8))));
+      switch ((_C_395 : ((_C_394 : q_2.charM) :> int32))) {
+        case (_C_376 : (34 :> int32)):
+        {  (_C_379 : ((_C_378 : p_2.charM) = (_C_377 : ((34 :> int32) :> int8))));
            
            (goto switch_0_break)
         }
-        case (_C_318 : (92 :> int32)):
-        {  (_C_321 : ((_C_320 : p_2.charM) = (_C_319 : ((92 :> int32) :> int8))));
+        case (_C_380 : (92 :> int32)):
+        {  (_C_383 : ((_C_382 : p_2.charM) = (_C_381 : ((92 :> int32) :> int8))));
            
            (goto switch_0_break)
         }
-        case (_C_322 : (97 :> int32)):
-        {  (_C_325 : ((_C_324 : p_2.charM) = (_C_323 : ((7 :> int32) :> int8))));
+        case (_C_384 : (97 :> int32)):
+        {  (_C_387 : ((_C_386 : p_2.charM) = (_C_385 : ((7 :> int32) :> int8))));
            
            (goto switch_0_break)
         }
-        case (_C_326 : (101 :> int32)):
-        {  (_C_329 : ((_C_328 : p_2.charM) = (_C_327 : ((27 :> int32) :> int8))));
+        case (_C_388 : (101 :> int32)):
+        {  (_C_391 : ((_C_390 : p_2.charM) = (_C_389 : ((27 :> int32) :> int8))));
            
            (goto switch_0_break)
         }
         default:
         {  ();
-           (_C_331 : (__retres_2 = (_C_330 : ((0 :> int32) :> _bool))));
+           (_C_393 : (__retres_2 = (_C_392 : ((0 :> int32) :> _bool))));
            
            (goto return_label)
         }
       };
       (switch_0_break : ());
-      (_C_337 : ((_C_336 : dst_3.char_xM) = (_C_335 : ((_C_334 : dst_3.char_xM) +
+      (_C_399 : ((_C_398 : dst_3.char_xM) = (_C_397 : ((_C_396 : dst_3.char_xM) +
                                                         (1 :> int32)))));
-      (_C_341 : ((_C_340 : src_9.char_xM) = (_C_339 : ((_C_338 : src_9.char_xM) +
+      (_C_403 : ((_C_402 : src_9.char_xM) = (_C_401 : ((_C_400 : src_9.char_xM) +
                                                         (1 :> int32)))));
-      (_C_343 : (__retres_2 = (_C_342 : ((1 :> int32) :> _bool))));
+      (_C_405 : (__retres_2 = (_C_404 : ((1 :> int32) :> _bool))));
       (return_label : 
       (return __retres_2))
    }
@@ -946,7 +1018,7 @@ behavior fail:
 
 int32 string_unescape(charP[..] v_src_5, charP[..] dst, uint64 size_2,
                       uint32 flags_0)
-  requires ((_C_482 : \at((if (\at(0,Here) <=
+  requires ((_C_544 : \at((if (\at(0,Here) <=
                                 \at(((size_2 :> integer) - 1),Here)) then 
                           (((\offset_min(\at(v_src_5,Here)) <= \at(0,Here)) &&
                              (\offset_max(\at(v_src_5,Here)) >=
@@ -956,7 +1028,7 @@ int32 string_unescape(charP[..] v_src_5, charP[..] dst, uint64 size_2,
                                  (__framac_tmp26 <=
                                    \at(((size_2 :> integer) - 1),Here))) ==>
                                 true))) else true),Here)) &&
-             (_C_483 : \at((if (\at(0,Here) <=
+             (_C_545 : \at((if (\at(0,Here) <=
                                  \at(((size_2 :> integer) - 1),Here)) then 
                            (((\offset_min(\at(dst,Here)) <= \at(0,Here)) &&
                               (\offset_max(\at(dst,Here)) >=
@@ -977,9 +1049,9 @@ behavior empty:
                ((flags_0 & (0x04 :> uint32)) == (0 :> uint32))) &&
               ((flags_0 & (0x08 :> uint32)) == (0 :> uint32))));
   assigns (dst + [0..((size_2 :> integer) - 1)]).charM;
-  ensures (_C_478 : ((_C_479 : ((\result :> integer) ==
+  ensures (_C_540 : ((_C_541 : ((\result :> integer) ==
                                  ((\at(size_2,Old) :> integer) - 1))) &&
-                      (_C_480 : (\forall integer i_2;
+                      (_C_542 : (\forall integer i_2;
                                   (((0 <= i_2) &&
                                      (i_2 < (\at(size_2,Old) :> integer))) ==>
                                     ((\at(dst,Old) + i_2).charM ==
@@ -997,156 +1069,156 @@ behavior empty:
    
    (var _bool tmp_0_3);
    
-   (var _bool tmp_1_0);
+   (var _bool tmp_1_1);
    
    (var _bool tmp_2_0);
    
-   (var charP[..] tmp_3);
+   (var charP[..] tmp_3_0);
    
-   (var charP[..] tmp_4);
+   (var charP[..] tmp_4_0);
    
-   (var charP[..] tmp_5);
+   (var charP[..] tmp_5_0);
    
    (var int32 __retres_3);
    
-   {  (_C_368 : (src_5 = (_C_367 : (new char_xP[1]))));
-      (_C_370 : ((_C_369 : src_5.char_xM) = v_src_5));
-      (_C_372 : (out = (_C_371 : (new char_xP[1]))));
-      (_C_374 : (osrc = (_C_373 : src_5.char_xM)));
-      (_C_376 : (osize = (_C_375 : (size_2 :> int32))));
-      (_C_378 : ((_C_377 : out.char_xM) = dst));
+   {  (_C_430 : (src_5 = (_C_429 : (new char_xP[1]))));
+      (_C_432 : ((_C_431 : src_5.char_xM) = v_src_5));
+      (_C_434 : (out = (_C_433 : (new char_xP[1]))));
+      (_C_436 : (osrc = (_C_435 : src_5.char_xM)));
+      (_C_438 : (osize = (_C_437 : (size_2 :> int32))));
+      (_C_440 : ((_C_439 : out.char_xM) = dst));
       
       loop 
       behavior default:
-        invariant (_C_383 : (((_C_385 : (\base_block(osrc) ==
+        invariant (_C_445 : (((_C_447 : (\base_block(osrc) ==
                                           \base_block(src_5.char_xM))) &&
-                               (_C_386 : ((osrc - src_5.char_xM) <= 0))) &&
-                              ((_C_388 : (\base_block(src_5.char_xM) ==
+                               (_C_448 : ((osrc - src_5.char_xM) <= 0))) &&
+                              ((_C_450 : (\base_block(src_5.char_xM) ==
                                            \base_block((osrc +
                                                          (osize :> integer))))) &&
-                                (_C_389 : ((src_5.char_xM -
+                                (_C_451 : ((src_5.char_xM -
                                              (osrc + (osize :> integer))) <
                                             0)))));
       behavior default:
-        invariant (_C_380 : ((_C_381 : ((0 :> uint64) <= size_2)) &&
-                              (_C_382 : ((size_2 :> integer) <=
+        invariant (_C_442 : ((_C_443 : ((0 :> uint64) <= size_2)) &&
+                              (_C_444 : ((size_2 :> integer) <=
                                           (osize :> integer)))));
-      variant (_C_379 : size_2);
+      variant (_C_441 : size_2);
       while (true)
       {  
-         {  (if (_C_396 : (((_C_395 : (_C_394 : src_5.char_xM).charM) :> int8) !=
+         {  (if (_C_458 : (((_C_457 : (_C_456 : src_5.char_xM).charM) :> int8) !=
                             (0 :> int8))) then 
-            {  (_C_392 : (size_2 = (_C_391 : ((_C_390 : (size_2 -
+            {  (_C_454 : (size_2 = (_C_453 : ((_C_452 : (size_2 -
                                                           (1 :> uint64))) :> uint64))));
-               (if (_C_393 : ((size_2 :> uint64) != (0 :> uint64))) then () else 
+               (if (_C_455 : ((size_2 :> uint64) != (0 :> uint64))) then () else 
                (goto while_0_break))
             } else 
             (goto while_0_break));
             
-            {  (if (_C_452 : ((_C_451 : ((_C_450 : (_C_449 : ((_C_448 : src_5.char_xM) +
+            {  (if (_C_514 : ((_C_513 : ((_C_512 : (_C_511 : ((_C_510 : src_5.char_xM) +
                                                                (0 :> int32))).charM) :> int32)) ==
-                               (92 :> int32))) then (if (_C_447 : ((_C_446 : (
-                                                                   (_C_445 : 
-                                                                   (_C_444 : 
-                                                                   ((_C_443 : src_5.char_xM) +
+                               (92 :> int32))) then (if (_C_509 : ((_C_508 : (
+                                                                   (_C_507 : 
+                                                                   (_C_506 : 
+                                                                   ((_C_505 : src_5.char_xM) +
                                                                     (1 :> int32))).charM) :> int32)) !=
                                                                     (0 :> int32))) then 
-                                                    (if (_C_442 : (size_2 >
-                                                                    (_C_441 : ((1 :> int32) :> uint64)))) then 
-                                                    {  (_C_400 : ((_C_399 : src_5.char_xM) = 
-                                                       (_C_398 : ((_C_397 : src_5.char_xM) +
+                                                    (if (_C_504 : (size_2 >
+                                                                    (_C_503 : ((1 :> int32) :> uint64)))) then 
+                                                    {  (_C_462 : ((_C_461 : src_5.char_xM) = 
+                                                       (_C_460 : ((_C_459 : src_5.char_xM) +
                                                                    (1 :> int32)))));
-                                                       (_C_403 : (size_2 = 
-                                                       (_C_402 : ((_C_401 : 
+                                                       (_C_465 : (size_2 = 
+                                                       (_C_464 : ((_C_463 : 
                                                                   (size_2 -
                                                                     (1 :> uint64))) :> uint64))));
-                                                       (if (_C_410 : 
-                                                           (((_C_409 : (
-                                                             (_C_408 : 
+                                                       (if (_C_472 : 
+                                                           (((_C_471 : (
+                                                             (_C_470 : 
                                                              (flags_0 &
-                                                               (_C_407 : ((0x01 :> int32) :> uint32)))) :> uint32)) :> uint32) !=
+                                                               (_C_469 : ((0x01 :> int32) :> uint32)))) :> uint32)) :> uint32) !=
                                                              (0 :> uint32))) then 
-                                                       {  (_C_405 : (tmp_0_2 = 
-                                                          (_C_404 : unescape_space(
+                                                       {  (_C_467 : (tmp_0_2 = 
+                                                          (_C_466 : unescape_space(
                                                           src_5, out))));
-                                                          (if (_C_406 : 
+                                                          (if (_C_468 : 
                                                               ((tmp_0_2 :> _bool) !=
                                                                 (0 :> _bool))) then 
                                                           (goto __Cont) else ())
                                                        } else ());
-                                                       (if (_C_417 : 
-                                                           (((_C_416 : (
-                                                             (_C_415 : 
+                                                       (if (_C_479 : 
+                                                           (((_C_478 : (
+                                                             (_C_477 : 
                                                              (flags_0 &
-                                                               (_C_414 : ((0x02 :> int32) :> uint32)))) :> uint32)) :> uint32) !=
+                                                               (_C_476 : ((0x02 :> int32) :> uint32)))) :> uint32)) :> uint32) !=
                                                              (0 :> uint32))) then 
-                                                       {  (_C_412 : (tmp_0_3 = 
-                                                          (_C_411 : unescape_octal(
+                                                       {  (_C_474 : (tmp_0_3 = 
+                                                          (_C_473 : unescape_octal(
                                                           src_5, out))));
-                                                          (if (_C_413 : 
+                                                          (if (_C_475 : 
                                                               ((tmp_0_3 :> _bool) !=
                                                                 (0 :> _bool))) then 
                                                           (goto __Cont) else ())
                                                        } else ());
-                                                       (if (_C_424 : 
-                                                           (((_C_423 : (
-                                                             (_C_422 : 
+                                                       (if (_C_486 : 
+                                                           (((_C_485 : (
+                                                             (_C_484 : 
                                                              (flags_0 &
-                                                               (_C_421 : ((0x04 :> int32) :> uint32)))) :> uint32)) :> uint32) !=
+                                                               (_C_483 : ((0x04 :> int32) :> uint32)))) :> uint32)) :> uint32) !=
                                                              (0 :> uint32))) then 
-                                                       {  (_C_419 : (tmp_1_0 = 
-                                                          (_C_418 : unescape_hex(
+                                                       {  (_C_481 : (tmp_1_1 = 
+                                                          (_C_480 : unescape_hex(
                                                           src_5, out))));
-                                                          (if (_C_420 : 
-                                                              ((tmp_1_0 :> _bool) !=
+                                                          (if (_C_482 : 
+                                                              ((tmp_1_1 :> _bool) !=
                                                                 (0 :> _bool))) then 
                                                           (goto __Cont) else ())
                                                        } else ());
-                                                       (if (_C_431 : 
-                                                           (((_C_430 : (
-                                                             (_C_429 : 
+                                                       (if (_C_493 : 
+                                                           (((_C_492 : (
+                                                             (_C_491 : 
                                                              (flags_0 &
-                                                               (_C_428 : ((0x08 :> int32) :> uint32)))) :> uint32)) :> uint32) !=
+                                                               (_C_490 : ((0x08 :> int32) :> uint32)))) :> uint32)) :> uint32) !=
                                                              (0 :> uint32))) then 
-                                                       {  (_C_426 : (tmp_2_0 = 
-                                                          (_C_425 : unescape_special(
+                                                       {  (_C_488 : (tmp_2_0 = 
+                                                          (_C_487 : unescape_special(
                                                           src_5, out))));
-                                                          (if (_C_427 : 
+                                                          (if (_C_489 : 
                                                               ((tmp_2_0 :> _bool) !=
                                                                 (0 :> _bool))) then 
                                                           (goto __Cont) else ())
                                                        } else ());
                                                        
-                                                       {  (_C_433 : (tmp_3 = 
-                                                          (_C_432 : out.char_xM)));
-                                                          (_C_437 : (
-                                                          (_C_436 : out.char_xM) = 
-                                                          (_C_435 : ((_C_434 : out.char_xM) +
+                                                       {  (_C_495 : (tmp_3_0 = 
+                                                          (_C_494 : out.char_xM)));
+                                                          (_C_499 : (
+                                                          (_C_498 : out.char_xM) = 
+                                                          (_C_497 : ((_C_496 : out.char_xM) +
                                                                     (1 :> int32)))));
-                                                          (_C_440 : (
-                                                          (_C_439 : tmp_3.charM) = 
-                                                          (_C_438 : ((92 :> int32) :> int8))))
+                                                          (_C_502 : (
+                                                          (_C_501 : tmp_3_0.charM) = 
+                                                          (_C_500 : ((92 :> int32) :> int8))))
                                                        }
                                                     } else ()) else ()) else ());
                
-               {  (_C_454 : (tmp_4 = (_C_453 : out.char_xM)));
-                  (_C_458 : ((_C_457 : out.char_xM) = (_C_456 : ((_C_455 : out.char_xM) +
+               {  (_C_516 : (tmp_4_0 = (_C_515 : out.char_xM)));
+                  (_C_520 : ((_C_519 : out.char_xM) = (_C_518 : ((_C_517 : out.char_xM) +
                                                                   (1 :> int32)))));
-                  (_C_460 : (tmp_5 = (_C_459 : src_5.char_xM)));
-                  (_C_464 : ((_C_463 : src_5.char_xM) = (_C_462 : ((_C_461 : src_5.char_xM) +
+                  (_C_522 : (tmp_5_0 = (_C_521 : src_5.char_xM)));
+                  (_C_526 : ((_C_525 : src_5.char_xM) = (_C_524 : ((_C_523 : src_5.char_xM) +
                                                                     (1 :> int32)))));
-                  (_C_467 : ((_C_466 : tmp_4.charM) = (_C_465 : tmp_5.charM)))
+                  (_C_529 : ((_C_528 : tmp_4_0.charM) = (_C_527 : tmp_5_0.charM)))
                }
             };
             (__Cont : ())
          }
       };
       (while_0_break : ());
-      (_C_471 : ((_C_470 : (_C_469 : out.char_xM).charM) = (_C_468 : ((0 :> int32) :> int8))));
-      (_C_475 : (__retres_3 = (_C_474 : ((_C_473 : ((_C_472 : out.char_xM) -
+      (_C_533 : ((_C_532 : (_C_531 : out.char_xM).charM) = (_C_530 : ((0 :> int32) :> int8))));
+      (_C_537 : (__retres_3 = (_C_536 : ((_C_535 : ((_C_534 : out.char_xM) -
                                                      dst)) :> int32))));
-      (_C_476 : (free(src_5)));
-      (_C_477 : (free(out)));
+      (_C_538 : (free(src_5)));
+      (_C_539 : (free(out)));
       
       (return __retres_3)
    }
