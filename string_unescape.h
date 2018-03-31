@@ -6,6 +6,8 @@
 #define UNESCAPE_SPACE 0x01
 #define UNESCAPE_SPECIAL 0x08
 
+const char hex_asc[] = "0123456789abcdef";
+
 enum {
  false = 0,
  true = 1

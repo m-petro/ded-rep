@@ -31,8 +31,9 @@
        assumes **src == 'x';
        assumes isxdigit(*(*src + 1));
        assumes isxdigit(*(*src + 2));
-        requires \valid(*src + 1);
+       requires \valid(*src + 1);
        requires \valid(*src + 2);
+       requires \valid(*src + 3);
        assigns **dst, *dst, *src;
        ensures *dst == \old(*dst + 1);
        ensures *src == \old(*src + 3);
@@ -151,14 +152,15 @@ static bool unescape_octal(char **src, char **dst)
 	 loop invariant num < 32 * 8;
 	 loop variant  3 - (q - *src); 
 	*/
-		
+
+
 	while (num < 32 && isodigit(*q) && (q - *src < 3)) {
 		//CODE CHANGE BEGIN
-		num *= 8; 
-		num += (*q++) % 7; 
+		num *= 8; 	
+		num += (*q++) % 8; 
 		//CODE CHANGE END
 	}
-	
+
 	*p = num;
 	*dst += 1;
 	*src = q;
@@ -175,6 +177,10 @@ static bool unescape_octal(char **src, char **dst)
 		axiom F: unescape_space ('f') == '\f';
     }
 */
+
+
+
+	// this could be written by predicats
 
 /*@
 	requires \valid (src) && \valid (dst) &&
@@ -233,6 +239,8 @@ static bool unescape_space(char **src, char **dst)
 	axiom A:  unescape_special ('a') == '\a';
     }
 */
+
+	// this could be written by predicats
 
 /*@ predicate is_special(integer c) = (c == '\"' || c == '\\' 
  				|| c == 'e'  || c == 'a'); */
@@ -293,8 +301,10 @@ static bool unescape_special(char **src, char **dst)
 			((flags & (unsigned int)UNESCAPE_SPECIAL) == 0)); 							 
 	assigns dst[0..size - 1];
 	ensures \result == (size - 1);
-	ensures 
-		\forall integer i; 0 <= i < size ==> dst[i] == src[i];
+	
+	ensures \true;
+	//	ensures 
+	//	\forall integer i; 0 <= i < size ==> dst[i] == src[i];
 
 	//behavior is_octal:
 	//assumes 
@@ -335,6 +345,7 @@ int string_unescape(char *src, char *dst, size_t size, unsigned int flags)
 		if (src[0] == '\\' && src[1] != '\0' && size > 1) {
 			src++;
 			size--;
+	/*
 			if (flags & UNESCAPE_SPACE &&
 					unescape_space(&src, &out))
 				continue;
@@ -346,6 +357,11 @@ int string_unescape(char *src, char *dst, size_t size, unsigned int flags)
 			if (flags & UNESCAPE_HEX &&
 					unescape_hex(&src, &out))
 				continue;
+	*/
+
+			// comment it and verify by parts
+			// copy str_len.h from str_len
+
 
 			if (flags & UNESCAPE_SPECIAL &&
 					unescape_special(&src, &out))
