@@ -1,46 +1,39 @@
 #include "string_unescape.h"
 
-/*@ requires \valid(src) && \valid(*src);
-    requires \valid(dst) && \valid(*dst);
 
-    behavior not_x:
-        assumes **src != 'x';
-        assigns *src;
-        ensures *src == \old(*src + 1);
-        ensures \result == \false;
-       
+/*@
+	axiomatic len_of_hex 
+	{
+    	logic size_t len_of_hex{L}(char *x);
+		axiom NH: \forall char *x; *x != 'x' ==> len_of_hex(x) ==  0;
+		axiom L0: \forall char *x; *x == 'x' &&  !isxdigit(*(x + 1)) ==> len_of_hex(x) ==  1;
+		axiom L1: \forall char *x; *x == 'x' &&  isxdigit(*(x + 1)) && !isxdigit(*(x + 2))
+																		 ==> len_of_hex(x) ==  2;
+		axiom L2: \forall char *x; *x == 'x' &&  isxdigit(*(x + 1)) && isxdigit(*(x + 2))
+																	     ==> len_of_hex(x) ==  3;
+	}
+
+*/ 
+
+/*@ 
+	requires \valid(src) && \valid(*src);
+    requires \valid(dst) && \valid(*dst);
+    requires \valid(*src + (0..(len_of_hex(*src))));
     behavior not_hex:
-        assumes **src == 'x' && !isxdigit(*(*src + 1));
-        requires \valid(*src + 1);
-        assigns *src;
-        ensures *src == \old(*src + 2);
-        ensures \result == \false;
-    
-    behavior one_digit:
-        assumes **src == 'x';
-        assumes isxdigit(*(*src + 1));
-        assumes !isxdigit(*(*src + 2));
-        requires \valid(*src + 1);
-        requires \valid(*src + 2);
+        assumes len_of_hex(*src) == 0 || len_of_hex(*src) == 1;
+   		assigns *src;
+   		ensures *src == \old(*src + 1 + len_of_hex(*\old(src)));
+		ensures \result == \false;
+    behavior valid_hex:
+        assumes len_of_hex(*src) == 2 ||  len_of_hex(*src) == 3;
         assigns **dst, *dst, *src;
-        ensures *dst == \old(*dst + 1);
-        ensures *src == \old(*src + 2);
-        ensures *(\old(*dst)) == hex_to_bin(*(*\old(src) + 1));
-        ensures \result == \true;
-   behavior two_digits:
-       assumes **src == 'x';
-       assumes isxdigit(*(*src + 1));
-       assumes isxdigit(*(*src + 2));
-       requires \valid(*src + 1);
-       requires \valid(*src + 2);
-       requires \valid(*src + 3);
-       assigns **dst, *dst, *src;
-       ensures *dst == \old(*dst + 1);
-       ensures *src == \old(*src + 3);
-       ensures \result == \true;
-   
-   complete behaviors;
-   disjoint behaviors;
+		ensures len_of_hex(*src) == 2 ==> *(\old(*dst)) == hex_to_bin(*(*\old(src) + 1));
+		ensures len_of_hex(*src) == 3 ==> *(\old(*dst)) == hex_to_bin(*(*\old(src) + 1)) * 16
+																  + hex_to_bin(*(*\old(src) + 2));
+        ensures *src == \old(*src + len_of_hex(*\old(src)));
+		ensures *dst == \old(*dst + 1);
+		ensures \result == \true;
+
 */
  
 static bool unescape_hex(char **src, char **dst)
@@ -54,19 +47,12 @@ static bool unescape_hex(char **src, char **dst)
 	//@ assert q == *src + 1;	
 	//CODE CHANGE BEGIN
 	digit = hex_to_bin(*q++); 
-	//@ for not_hex: assert digit == -1;
-	//@ for one_digit: assert 0 <= digit <= 15;
-	//@ for two_digits: assert 0 <= digit <= 15; 
 	//@ assert q == *src + 2;
 	if (digit < 0)
 		return false;
-	//@ assert 0 <= digit <= 15;
 	num = digit;
-	//@ assert 0 <= num <= 15;
 	//CODE CHANGE END
 	digit = hex_to_bin(*q);
-	//@ for one_digit: assert digit == -1; 
-	//@ for two_digits: assert 0 <= digit <= 15; 
 	if (digit >= 0) {
 		q++;
 		//@ assert q == *src + 3;
@@ -79,59 +65,41 @@ static bool unescape_hex(char **src, char **dst)
 		//CODE CHANGE END
 	}
 	*p = num;
-	//@ assert p == *dst;
 	*dst += 1;
-	//@ assert p == *dst + 1;
-	//@ for one_digit: assert q == (*src + 2); 
-	//@ for two_digits: assert q == (*src + 3);
 	*src = q;
 	return true;
 }
 
-/*@ requires \valid(src) && \valid(*src);
+/*@
+	axiomatic len_of_octal 
+	{
+    	logic size_t len_of_octal{L}(char *x);
+		axiom NO: \forall char *x; !isodigit(*x) ==> len_of_octal(x) == 0;
+		axiom O0: \forall char *x; isodigit(*x) && !isodigit(*(x + 1)) ==> len_of_octal(x) == 1;
+		axiom O1: \forall char *x; isodigit(*x) && isodigit(*(x + 1)) && !isodigit(*(x + 2))
+																		 ==> len_of_octal(x) == 2;
+		axiom O2: \forall char *x; isodigit(*x) && isodigit(*(x + 1)) && isodigit(*(x + 2))
+																	     ==> len_of_octal(x) == 3;
+	}
+
+*/ 
+
+/*@ 
+	requires \valid(src) && \valid(*src);
     requires \valid(dst) && \valid(*dst);
-    
-    requires isodigit(**src) ==> \valid(*src + 1);
-    requires isodigit(*(*src + 1)) ==> \valid(*src + 2);
-    requires isodigit(*(*src + 2)) ==> \valid(*src + 3);
-    
-    behavior not_octal:
-       assumes !isodigit(**src);
-       assigns \nothing;
-       ensures \result == \false;
-       
-    behavior one_digit:
-       assumes isodigit(**src);
-       assumes !isodigit(*(*src + 1));
-       requires \valid(*src + 1);
-       assigns **dst, *dst, *src;
-       ensures *dst == \old(*dst + 1);
-       ensures *src == \old(*src + 1);
-       ensures *(\old(*dst)) == (**\old(src));
-       ensures \result == \true;
-       
-   behavior two_digits:
-       assumes isodigit(**src);
-       assumes isodigit(*(*src + 1));
-       assumes !isodigit(*(*src + 2));
-       assigns **dst, *dst, *src;
-       ensures *dst == \old(*dst + 1);
-       ensures *src == \old(*src + 2);
-       ensures *(\old(*dst)) == (**\old(src)) + 8 * (*(\old(*src + 1)));
-       ensures \result == \true;
-  
-   behavior three_digits:
-	   assumes isodigit(**src);
-       assumes isodigit(*(*src + 1));
-       assumes isodigit(*(*src + 2));
-       assigns **dst, *dst, *src;
-       ensures *dst == \old(*dst + 1);
-       ensures *src == \old(*src + 3);
-       ensures *(\old(*dst)) == (**\old(src)) + 8 * (*(\old(*src + 1))) + 64 * (*(\old(*src + 2)));
-       ensures \result == \true;
-   
-   complete behaviors;
-   disjoint behaviors;
+    requires \valid(*src + (0..len_of_octal(*src)));
+    behavior not_hex:
+    	assumes len_of_octal(*src) == 0;
+   		assigns \nothing;
+    	ensures \result == \false;
+    behavior valid_hex:
+    	assumes len_of_hex(*src) == 2 ||  len_of_hex(*src) == 3;
+    	assigns **dst, *dst, *src;
+		ensures len_of_octal(*src) == 2 ==> *(\old(*dst)) == (**\old(src)) + 8 * (*(\old(*src + 1)));
+		ensures len_of_octal(*src) == 3 ==> *(\old(*dst)) == (**\old(src)) + 8 * (*(\old(*src + 1))) + 64 * (*(\old(*src + 2)));
+    	ensures *src == \old(*src + len_of_octal(*\old(src)));
+		ensures *dst == \old(*dst + 1);
+		ensures \result == \true;
 */
 
 static bool unescape_octal(char **src, char **dst)
@@ -142,18 +110,16 @@ static bool unescape_octal(char **src, char **dst)
 	if (isodigit(*q) == 0)
 		return false;
 	//CODE CHANGE BEGIN
-	num = (*q++) % 7;
+	num = (*q++) % 8;
 	//@ assert q == *src + 1;
 	//@ assert 0 <= num <= 6;
 	//CODE CHANGE END
-	
+
 	/*@ 
 	 loop invariant *src < q <= 3 + *src;
 	 loop invariant num < 32 * 8;
 	 loop variant  3 - (q - *src); 
 	*/
-
-
 	while (num < 32 && isodigit(*q) && (q - *src < 3)) {
 		//CODE CHANGE BEGIN
 		num *= 8; 	
@@ -178,26 +144,20 @@ static bool unescape_octal(char **src, char **dst)
     }
 */
 
-
-
-	// this could be written by predicats
+//@ predicate is_space(integer c) = (c == 'n' || c == 'r' || c == 't'  || c == 'v' || c == 'f'); 
 
 /*@
 	requires \valid (src) && \valid (dst) &&
 			 \valid (*src) && \valid(*dst);
 	assigns (**dst), *src, *dst;
     behavior is_space:
-        assumes (**src) == 'n' || (**src) == 't' ||
-				(**src) == 'r' || (**src) == 'v' ||
-				(**src) == 'f'; 
+        assumes is_space(**src);
         ensures \result == true;
         ensures *dst == \old(*dst + 1);
         ensures *src == \old(*src + 1);
         ensures (*(*dst - 1)) == unescape_space(*(*src - 1));
     behavior fail:
-        assumes (**src) != 'n' && (**src) != 't' &&
-				(**src) != 'r' && (**src) != 'v' &&
-				(**src) != 'f'; 
+        assumes !is_space(**src);
         ensures \result == false;
     complete behaviors;
     disjoint behaviors;
@@ -240,26 +200,21 @@ static bool unescape_space(char **src, char **dst)
     }
 */
 
-	// this could be written by predicats
-
-/*@ predicate is_special(integer c) = (c == '\"' || c == '\\' 
- 				|| c == 'e'  || c == 'a'); */
+//@ predicate is_special(integer c) = (c == '\"' || c == '\\' || c == 'e'  || c == 'a'); 
 
 /*@
-	requires \valid (src) && \valid (dst) &&  				// переписать на предикатах						
+	requires \valid (src) && \valid (dst) &&  								
 			 \valid (*src) && \valid(*dst);
 	assigns (**dst), *dst, *src;
     behavior is_special:
-        assumes (**src) == '\"' || (**src) == '\\' ||
-				(**src) == 'e'  || (**src) == 'a';
+        assumes is_special(**src);
         ensures \result == true;
         ensures *dst == \old(*dst + 1);
         ensures *src == \old(*src + 1);
         ensures (*(*dst - 1)) == unescape_special(*(*src - 1));
 														
     behavior fail:
-         assumes (**src) != '\"' && (**src) != '\\' &&
-				 (**src) != 'e'  && (**src) != 'a';   // '\e' !!
+         assumes !is_special(**src);
          ensures \result == false;
     complete behaviors;
     disjoint behaviors;
