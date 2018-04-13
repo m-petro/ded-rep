@@ -3,24 +3,23 @@
 /*@
 
 predicate null(size_t size, char* src, unsigned char c) =
-	 	\forall size_t i; 0 < i <= size && i < 3 ==> src[i-1] == null_get_value(i, c);
-
-	axiomatic null_get_value 
-	{
-    	logic char null_get_value{L} (size_t i, unsigned char c);
+		\forall size_t i; 0 < i <= size && i < 3 ==> src[i-1] == null_get_value(i, c);
+	
+	axiomatic null_get_value {
+    logic char null_get_value{L} (size_t i, unsigned char c);
 		axiom N1:  \forall unsigned char c; null_get_value (1, c) == '\\';
 		axiom N2:  \forall unsigned char c; null_get_value (2, c) == '0';
-	}
+	}	
 */
 
 /*@ 
 	requires \valid(end) && \valid(dst);
 	requires \valid(*dst + (0..1));
-    requires \base_addr(*dst) == \base_addr(end);
-    behavior is_empty:
-        assumes c == 0;
-        assigns \nothing;
-        ensures \result == \false;
+	requires \base_addr(*dst) == \base_addr(end);
+	behavior is_empty:
+		assumes c == 0;
+		assigns \nothing;
+		ensures \result == \false;
 	behavior not_empty:
 		assumes c != 0;
 		assigns *dst, *dst[0..(end - *dst)];
@@ -49,11 +48,10 @@ static bool escape_null(unsigned char c, char **dst, char *end)
 
 
 /*@ predicate octal(size_t size, char* src, unsigned char c) =
-	 \forall size_t i; 0 <= i <= size && i < 4 ==> src[i] == octal_get_value(i, c);
+			\forall size_t i; 0 <= i <= size && i < 4 ==> src[i] == octal_get_value(i, c);
 
-	axiomatic octal_get_value 
-	{
-    	logic char octal_get_value{L} (size_t i, unsigned char c);
+	axiomatic octal_get_value {
+	logic char octal_get_value{L} (size_t i, unsigned char c);
 		axiom O1:  \forall unsigned char c; octal_get_value (0, c) == '\\';
 		axiom O2:  \forall unsigned char c; octal_get_value (1, c) == ((c / 64) % 7) + '0';
 		axiom O3:  \forall unsigned char c; octal_get_value (2, c) == ((c / 8) % 7) + '0';
@@ -64,12 +62,12 @@ static bool escape_null(unsigned char c, char **dst, char *end)
 /*@ 
 	requires \valid(end) && \valid(dst);
 	requires \valid(*dst + (0..(end - *dst)));
-    requires \base_addr(*dst) == \base_addr(end);
-    assigns *dst, *dst[0..(end - *dst)];
+	requires \base_addr(*dst) == \base_addr(end);
+	assigns *dst, *dst[0..(end - *dst)];
 	behavior not_empty:
-    	ensures *dst == \old(*dst + 4);
- 		ensures octal((size_t)(end - *dst), \old(*dst), c);
-    	ensures \result == \true;
+		ensures *dst == \old(*dst + 4);
+		ensures octal((size_t)(end - *dst), \old(*dst), c);
+		ensures \result == \true;
 */
 
 static bool escape_octal(unsigned char c, char **dst, char *end)
@@ -100,8 +98,7 @@ static bool escape_octal(unsigned char c, char **dst, char *end)
 		//*out = ((c >> 0) & 0x07) + '0';
 		//CODE CHANGE END
 	++out;
-	//@ assert out == *dst + 4;
-	
+	//@ assert out == *dst + 4;	
 	*dst = out;
 	return true;
 }
@@ -109,20 +106,20 @@ static bool escape_octal(unsigned char c, char **dst, char *end)
 /*@ 
 	requires \valid(end) && \valid(dst);
 	requires \valid(*dst + (0..1));
-    requires \base_addr(*dst) == \base_addr(end);
-    behavior size_zero:
-        assumes *dst >= end;
-        assigns *dst;
-        ensures *dst == \old(*dst + 1);
-        ensures \result == \true;
-    behavior size_one:
-        assumes *dst < end;
-        assigns *dst, **dst;
-        ensures *dst == \old(*dst + 1);
-        ensures *\old(*dst) == (char %)c;
-        ensures \result == \true;
-    complete behaviors;
-    disjoint behaviors;
+	requires \base_addr(*dst) == \base_addr(end);
+	behavior size_zero:
+		assumes *dst >= end;
+		assigns *dst;
+		ensures *dst == \old(*dst + 1);
+		ensures \result == \true;
+	behavior size_one:
+		assumes *dst < end;
+		assigns *dst, **dst;
+		ensures *dst == \old(*dst + 1);
+		ensures *\old(*dst) == (char %)c;
+		ensures \result == \true;
+	complete behaviors;
+	disjoint behaviors;
 */
 
 static bool escape_passthrough(unsigned char c, char **dst, char *end)
@@ -137,37 +134,33 @@ static bool escape_passthrough(unsigned char c, char **dst, char *end)
 }
 /*@
 
-predicate space(size_t size, char* src, unsigned char c) =
-	 	\forall size_t i; 0 < i <= size && i < 3 ==> src[i-1] == space_get_value(i, c);
+	predicate space(size_t size, char* src, unsigned char c) =
+			\forall size_t i; 0 < i <= size && i < 3 ==> src[i-1] == space_get_value(i, c);
 
-	axiomatic space_get_value 
-	{
-    	logic char space_get_value{L} (size_t i, unsigned char c);
+	axiomatic space_get_value {
+    logic char space_get_value{L} (size_t i, unsigned char c);
 		axiom Sp1:  \forall unsigned char c; space_get_value (1, c) == '\\';
 		axiom Sp2:  \forall unsigned char c; space_get_value (2, c) == escape_special(c);
 	}
-
-	axiomatic Es_Space 
-	{
-    	logic char escape_space (integer ch);
+	axiomatic Es_Space {
+	logic char escape_space (integer ch);
 		axiom N: escape_space ('\n') == 'n';
 		axiom R: escape_space ('\r') == 'r';
 		axiom T: escape_space ('\t') == 't';	
 		axiom V: escape_space ('\v') == 'v';
 		axiom F: escape_space ('\f') == 'f';
-    }
+	}
 */
-
 /*@ 
 	requires \valid(end) && \valid(dst);
 	requires \valid(*dst + (0..1));
-    requires \base_addr(*dst) == \base_addr(end);
-    behavior is_empty:
-        assumes c != '\n' && c != '\t' &&
+	requires \base_addr(*dst) == \base_addr(end);
+	behavior is_empty:
+		assumes c != '\n' && c != '\t' &&
 				c != '\r' && c != '\v' &&
 				c != '\f'; 
-        assigns \nothing;
-        ensures \result == \false;
+		assigns \nothing;
+		ensures \result == \false;
 	behavior not_empty:
 		assumes c == '\n' || c == '\t' ||
 				c == '\r' || c == '\v' ||
@@ -214,37 +207,30 @@ static bool escape_space(unsigned char c, char **dst, char *end)
 	return true;
 }
 
-/*@
-	predicate special(size_t size, char* src, unsigned char c) =
-	 	\forall size_t i; 0 < i <= size && i < 3 ==> src[i-1] == special_get_value(i, c);
-
-	axiomatic special_get_value 
-	{
-    	logic char special_get_value{L} (size_t i, unsigned char c);
+/*@ predicate special(size_t size, char* src, unsigned char c) =
+			\forall size_t i; 0 < i <= size && i < 3 ==> src[i-1] == special_get_value(i, c);
+	axiomatic special_get_value {
+	logic char special_get_value{L} (size_t i, unsigned char c);
 		axiom S1:  \forall unsigned char c; special_get_value (1, c) == '\\';
 		axiom S2:  \forall unsigned char c; special_get_value (2, c) == escape_special(c);
 	}
-
- 	axiomatic Es_Special 
- 	{
-    	logic char escape_special (integer c);
-		axiom Sl:  escape_special ('\\') == '\\';
-		axiom A:   escape_special ('\a') == 'a';
-		axiom E:   escape_special ('\e') == 'e';	
-    }
-
+	axiomatic Es_Special {
+	logic char escape_special (integer c);
+		axiom Sl: escape_special ('\\') == '\\';
+		axiom A:  escape_special ('\a') == 'a';
+		axiom E:  escape_special ('\e') == 'e';	
+	}
 */
 
 /*@ 
 	requires \valid(end) && \valid(dst);
 	requires \valid(*dst + (0..(end - *dst)));
-    requires \base_addr(*dst) == \base_addr(end);
-        
-    behavior is_empty:
-        assumes c != '\\' && c != '\a' &&
+	requires \base_addr(*dst) == \base_addr(end);
+	behavior is_empty:
+		assumes c != '\\' && c != '\a' &&
 				c != '\e'; 
-        assigns \nothing;
-        ensures \result == \false;
+		assigns \nothing;
+		ensures \result == \false;
 	behavior not_empty:
 		assumes c == '\\' || c == '\a' ||
 				c == '\e'; 
@@ -285,28 +271,25 @@ static bool escape_special(unsigned char c, char **dst, char *end)
 }
 
 /*@ predicate hex(size_t size, char* src, unsigned char c) =
-	 \forall size_t i; 0 <= i <= size && i < 4 ==> src[i] == hex_get_value(i, c);
-
-	axiomatic hex_get_value 
-	{
-    	logic char hex_get_value{L} (size_t i, unsigned char c);
-		axiom H1:  \forall unsigned char c; hex_get_value (0, c) == '\\';
-		axiom H2:  \forall unsigned char c; hex_get_value (1, c) == 'x';
-		axiom H3:  \forall unsigned char c; hex_get_value (2, c) == hex_asc_hi(c);
-		axiom H4:  \forall unsigned char c; hex_get_value (3, c) == hex_asc_lo(c);	
+			\forall size_t i; 0 <= i <= size && i < 4 ==> src[i] == hex_get_value(i, c);
+	axiomatic hex_get_value {
+	logic char hex_get_value{L} (size_t i, unsigned char c);
+		axiom H1: \forall unsigned char c; hex_get_value (0, c) == '\\';
+		axiom H2: \forall unsigned char c; hex_get_value (1, c) == 'x';
+		axiom H3: \forall unsigned char c; hex_get_value (2, c) == hex_asc_hi(c);
+		axiom H4: \forall unsigned char c; hex_get_value (3, c) == hex_asc_lo(c);	
 	}
 */
 
 /*@ 
 	requires \valid(end);
 	requires \valid(*dst + (0..(end - *dst)));
-    requires \base_addr(*dst) == \base_addr(end);
-    assigns *dst, *dst[0..(end - *dst)];
-    ensures *dst == \old(*dst + 4);
-    ensures \result == \true;
- 	ensures hex((size_t)(end - *dst), \old(*dst), c);
+	requires \base_addr(*dst) == \base_addr(end);
+	assigns *dst, *dst[0..(end - *dst)];
+	ensures *dst == \old(*dst + 4);
+	ensures \result == \true;
+	ensures hex((size_t)(end - *dst), \old(*dst), c);
 */
-
 
 static bool escape_hex(unsigned char c, char **dst, char *end)
 {
@@ -328,7 +311,6 @@ static bool escape_hex(unsigned char c, char **dst, char *end)
 		*out = hex_asc_lo(c);
 	++out;
 	//@ assert (end - *dst) == 4;
-
 	*dst = out;
 	return true;
 }
